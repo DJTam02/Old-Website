@@ -12,3 +12,4 @@ The purpose of this project was to make a mahjong game for free online. Initial 
 
 February 20, 2020
 -Project start-up
+-Set up all pages
