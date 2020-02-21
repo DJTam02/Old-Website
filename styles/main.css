@@ -22,6 +22,9 @@ body, html {
     background-image: url("../resources/images/background.jpg");
     height: 100%;
   }
+  .game-board {
+      background-color: #027673;
+  }
   #buttons-div {
       padding-top: 300px;
       text-align: center;
@@ -63,5 +66,22 @@ body, html {
       border-radius: 5px;
   }
   #p1, #p2, #p3, #p4:focus {
+      outline: none;
+  }
+  #vert-flower {
+      font-size: 0;
+      padding: 0px;
+      margin-left: 15px;
+      width: 39px;
+      opacity: 0%;
+  }
+  #tile-horiz {
+      width: 39px;
+      height: 26px;
+      border: 1px solid black;
+      background-color: #1ca800;
+      border-radius: 5px;
+  }
+  #tile-horiz:focus {
       outline: none;
   }
