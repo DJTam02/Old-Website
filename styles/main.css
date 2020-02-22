@@ -69,19 +69,109 @@ body, html {
       outline: none;
   }
   #vert-flower {
+      position: absolute;
       font-size: 0;
       padding: 0px;
-      margin-left: 15px;
-      width: 39px;
-      opacity: 0%;
+      width: 40px;
+  }
+  #vert-finish {
+      position: absolute;
+      font-size: 0;
+      padding: 0px;
+      width: 40px;
+  }
+  #compass{
+      margin-left: 5%;
+      width: 240px;
+      height: 240px;
+  }
+  #horiz-hand{ 
+      margin-top: 80px;
+      height: 40px;
+      font-size: 0;
+      padding: 0px;
+  }
+  #horiz-draw {
+    margin-top: 80px;
+    height: 40px;
+    font-size: 0;
+    padding: 0px;
+  }
+  #horiz-fin {
+      height: 40px;
+      font-size: 0;
+  }
+  #horiz-flower {
+      height: 40px;
+      font-size: 0;
+  }
+  #round-wind {
+      padding-top: 10px;
+      text-align: center;
+      position: absolute;
+      right: 0px;
+      width: 286px;
+      height: 169px;
+      margin-right: 0px;
+  }
+  #vert-hand {
+      width: 40px;
+      position: absolute;
+      top: 50%;
+      margin-top: -210px;
+      font-size: 0;
+  }
+  #vert-draw {
+      position: absolute;
+      margin-left: 120px;
+      width: 40px;
+      font-size: 0;
+  }
+  #mid {
+      margin-left: 160px;
+      width: 540px;
+      height: 540px;
+      padding-top: 110px;
+      padding-bottom: 110px;
+      padding-left: 90px;
+      padding-right: 90px; 
+  }
+  #next-button{
+      position: absolute;
+      margin-top: 120px;
+      margin-left: 1050px;
+      height: 40px;
+      width: 100px;
+  }
+  #score {
+      text-align: center;
+      width: 300px;
+      padding-bottom: 20px;
+  }
+  #individual-score {
+      margin: auto;
   }
   #tile-horiz {
-      width: 39px;
-      height: 26px;
+      width: 40px;
+      height: 30px;
       border: 1px solid black;
       background-color: #1ca800;
-      border-radius: 5px;
+      border-radius: 3px;
   }
   #tile-horiz:focus {
       outline: none;
   }
+  #tile-vert {
+    width: 30px;
+    height: 40px;
+    border: 1px solid black;
+    background-color: #1ca800;
+    border-radius: 3px;
+}
+#tile-vert:focus {
+    outline: none;
+}
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
