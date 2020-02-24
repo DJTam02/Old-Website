@@ -2,6 +2,7 @@ function resize() {
     var width = window.innerWidth;
     var height = window.innerHeight;
     var h = 52;
+    var x, w;
     if (height < width) {
         for (var i = 12; i >= 0; i--) {
             if (height >= i * 86) {
@@ -10,6 +11,8 @@ function resize() {
                 h -= 4;
             }
         }
+        w = (h * 3) / 4;
+        x = (height - (18 * w) - (4 * h)) / 2;
     } else {
         for (var i = 12; i >= 0; i--) {
             if (width >= i * 86) {
@@ -18,9 +21,9 @@ function resize() {
                 h -= 4;
             }
         }
+        w = (h * 3) / 4;
+        x = (width - (18 * w) - (4 * h)) / 2;
     }
-    var w = (h * 3) / 4;
-    var x = (height - (18 * w) - (4 * h)) / 2;
     var y = (width - (18 * w) - (4 * h)) / 2;
     var horiz = document.getElementsByClassName("tile-horiz");
     var vert = document.getElementsByClassName("tile-vert");
@@ -32,6 +35,7 @@ function resize() {
         vert[i].style.width = w + "px";
         vert[i].style.height = h + "px";
     }
+    /*
     document.getElementById("vert-flower").style.width = h + "px";
     document.getElementById("vert-flower").style.height = (w * 8) + "px";
     document.getElementById("vert-flower-1").style.width = h + "px";
@@ -40,8 +44,8 @@ function resize() {
     document.getElementById("vert-finish").style.height = (w * 14) + "px";
     document.getElementById("vert-finish-1").style.width = h + "px";
     document.getElementById("vert-finish-1").style.height = (w * 14) + "px";
-    document.getElementById("compass").style.width = (y - (x * 4) - h) + "px";
-    document.getElementById("compass").style.height = (y - (x * 4) - h) + "px";
+    document.getElementById("compass").style.width = (3 * h) + "px";
+    document.getElementById("compass").style.height = (3 * h) + "px";
     document.getElementById("compass").style.marginLeft = (x + h) + "px";
     document.getElementById("horiz-hand").style.marginTop = (h * 2) + "px";
     document.getElementById("horiz-hand").style.height = h + "px";
@@ -78,6 +82,10 @@ function resize() {
     document.getElementById("vert-hand-and-draw-1").style.marginLeft = (y - x - (w / 4)) + "px";
     document.getElementById("vert-hand-and-draw-1").style.width = ((h * 2) + x) + "px";
     document.getElementById("vert-hand-and-draw-1").style.height = (w * 18) + "px";
+    if (width < height) {
+        document.getElementById("vert-hand-and-draw-1").style.marginLeft = "222px";
+        document.getElementById("vert-hand-and-draw").style.marginRight = "222px";
+    }
     document.getElementById("horiz-hand-and-draw").style.marginLeft = -(w * 9) + "px";
     document.getElementById("horiz-hand-and-draw").style.height = ((h * 4) + x) + "px";
     document.getElementById("horiz-hand-and-draw").style.width = (w * 18) + "px";
@@ -105,4 +113,7 @@ function resize() {
     document.getElementById("first-row").style.height = (w * 8) + "px";
     document.getElementById("second-row").style.height = ((w * 18) - (2 * ((8 * w) - (4 * h) - x))) + "px";
     document.getElementById("third-row").style.height = (w * 8) + "px";
+    */
+
+    
 }

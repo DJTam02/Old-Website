@@ -68,180 +68,194 @@ body, html {
   #p1, #p2, #p3, #p4:focus {
       outline: none;
   }
-  #vert-flower {
+
+  #top-left {
       position: absolute;
-      font-size: 0;
-      padding: 0px;
-      width: 40px;
-      height: 240px;
+      left: 0px;
+      top: 0px;
+      width: 188px; /*y - h*/
+      height: 660px; /*22w*/
   }
-  #vert-flower-1 {
-    position: absolute;
-    font-size: 0;
-    padding: 0px;
-    width: 40px;
-    height: 240px;
-}
-  #vert-finish {
+  #left-flower-and-fin {
+      width: 40px; /*h*/
+      height: 660px; /*22w*/
+  }
+  #left-flower, #left-fin {
+      font-size: 0px;
+      width: 40px; /*h*/
+  }
+  #compass {
+      margin-left: 46px; /*x*/
+      width: 102px; /*y - 2h - x*/
+      height: 102px; /*y - 2h - x*/
+  }
+
+
+  #top-right {
+      text-align: end;
       position: absolute;
-      font-size: 0;
-      padding: 0px;
-      width: 40px;
-      height: 420px;
+      top: 0px;
+      right: 0px;
+      width: 660px; /*22w*/
+      height: 206px; /*4h + x*/
   }
-  #vert-finish-1 {
-    position: absolute;
-    font-size: 0;
-    padding: 0px;
-    width: 40px;
-    height: 420px;
-}
-  #compass{
-      margin-left: 86px;
-      width: 176px;
-      height: 176px;
+  #top-flower-and-fin {
+      text-align: end;
+      width: 660px; /*22w*/
+      height: 40px; /*h*/
   }
-  #horiz-hand{ 
-      margin-top: 80px;
-      height: 40px;
-      font-size: 0;
-      padding: 0px;
+  #top-fin, #top-flower {
+      font-size: 0px;
+      height: 40px; /*h*/
   }
-  #horiz-hand-1{ 
-    margin-top: 46px;
-    height: 40px;
-    font-size: 0;
-    padding: 0px;
-}
-  #horiz-draw {
-    margin-top: 0px;
-    height: 40px;
-    font-size: 0;
-    padding: 0px;
-  }
-  #horiz-draw-1 {
-    margin-top: 46px;
-    height: 40px;
-    font-size: 0;
-    padding: 0px;
-  }
-  #horiz-fin {
-      height: 40px;
-      width: 420px;
-      font-size: 0;
-  }
-  #horiz-fin-1 {
-    height: 40px;
-    width: 420px;
-    font-size: 0;
-}
-  #horiz-flower {
-      height: 40px;
-      width: 240px;
-      font-size: 0;
-  }
-  #horiz-flower-1 {
-    height: 40px;
-    width: 240px;
-    font-size: 0;
-}
   #round-wind {
-      background-color: white;
-      margin-top: 46px;
-      text-align: center;
       position: absolute;
       right: 0px;
-      width: 262px;
-      height: 169px;
-      margin-right: 0px;
+      text-align: center;
+      padding-top: 40px; /*h*/
+      width: 182px; /*y - x*/
+      height: 166px; /*2h + x*/
   }
-  #vert-hand {
-      width: 40px;
+
+
+  #bot-left {
       position: absolute;
-      top: 50%;
-      margin-top: -210px;
-      margin-left: 0px;
-      font-size: 0;
-  }
-  #vert-hand-1 {
-    width: 40px;
-    position: absolute;
-    top: 50%;
-    margin-top: -210px;
-    font-size: 0;
-    margin-left: 86px;
-}
-  #vert-draw {
-      position: absolute;
-      margin-left: 86px;
-      width: 40px;
-      height: 540px;
-      font-size: 0;
-  }
-  #vert-draw-1{
-    position: absolute;
-    width: 40px;
-    height: 540px;
-    font-size: 0;
-}
-  #vert-hand-and-draw {
-    width: 126px;
-    position: relative;
-    margin-top: -34px; 
-    height: 540px;
-  }
-  #vert-hand-and-draw-1 {
-    width: 126px;
-    position: relative;
-    margin-top: -34px; 
-    margin-left: 222px;
-    height: 540px;
-  }
-  #horiz-hand-and-draw {
-    position: absolute; 
-    left: 50%; 
-    margin-left: -270px; 
-    height: 206px; 
-    width: 540px;
-  }
-  #horiz-fin-and-flower {
-    position: absolute; 
-    right: 0px; 
-    width: 660px; 
-    text-align: right;
-  }
-  #horiz-draw-and-hand {
-    text-align: center; 
-    position: absolute; 
-    left: 50%; 
-    margin-left: -270px; 
-    margin-top: 34px; 
-    height: 126px;
-  }
-  #mid {
-      margin-top: -34px;
-      width: 540px;
-      height: 540px;
-      padding-top: 110px;
-      padding-bottom: 110px;
-      padding-left: 90px;
-      padding-right: 90px; 
-  }
-  #next-button{
-      margin-top: 126px;
-      margin-left: 888px;
-      height: 40px;
-      width: 126px;
+      bottom: 0px;
+      left: 0px;
+      height: 206px; /*4h + x*/
+      width: 660px; /*22w*/
   }
   #score {
-      background-color: white;
       text-align: center;
-      width: 300px;
-      padding-bottom: 20px;
+      top: 0px;
+      margin-bottom: 40px; /*h*/
+      width: 188px; /*y - h*/
+      height: 126px; /*h * 3*/
   }
-  #individual-score {
+  #individual-scores {
       margin: auto;
+      text-align: center;
   }
+  #bot-flower-and-fin {
+      width: 660px; /*22w*/
+      height: 40px; /*h*/
+  }
+  #bot-flower, #bot-fin {
+      height: 40px; /*h*/
+      font-size: 0px;
+  }
+
+  #right-flower-and-fin {
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
+      width: 40px; /*h*/
+      height: 660px; /*22w*/
+  }
+  #right-fin, #right-flower {
+      width: 40px; /*h*/
+      font-size: 0px;
+  }
+
+
+
+
+  #square {
+      position: relative;
+      margin: auto;
+      /*margin-top: 80px; /*2h*/
+      /*margin-left: 228px; /*y*/
+      margin-bottom: 80px; /*2h*/
+      width: 792px; /*18w + 4h + 2x*/
+      height: 792px; /*18w + 4h + 2x*/
+  }
+  #top-hand {
+      font-size: 0px;
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      margin-left: -210px; /*7w*/
+      width: 420px; /*14w*/
+      height: 40px; /*h*/
+  }
+  #left-hand {
+    font-size: 0px;
+      position: absolute;
+      left: 0px;
+      top: 50%;
+      margin-top: -210px; /*7w*/
+      width: 40px; /*h*/
+      height: 420px; /*14w*/
+  }
+  #right-hand {
+    font-size: 0px;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    margin-top: -210px; /*7w*/
+    width: 40px; /*h*/
+    height: 420px; /*14w*/
+}
+#bot-hand {
+    font-size: 0px; 
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    margin-left: -210px; /*7w*/
+    width: 420px; /*14w*/
+    height: 40px; /*h*/
+}
+#draw {
+    position: relative;
+    top: 86px;
+    width: 620px;
+    height: 620px;
+    margin: 86px; /*h + x*/
+}
+#top-draw {
+    position: absolute;
+    top: 0px; 
+    left: 50%;
+    margin-left: -270px; /*9w*/
+    height: 40px; /*h*/
+    width: 540px; /*18w*/ 
+}
+#left-draw {
+    font-size: 0px;
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    margin-top: -270px; /*9w*/
+    width: 40px; /*h*/
+    height: 540px; /*18w*/
+}
+#right-draw {
+    font-size: 0px;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    margin-top: -270px; /*9w*/
+    width: 40px; /*h*/
+    height: 540px; /*18w*/
+}
+#bot-draw {
+    font-size: 0px;
+    position: absolute;
+    bottom: 0px; 
+    left: 50%;
+    margin-left: -270px; /*9w*/
+    height: 40px; /*h*/
+    width: 540px; /*18w*/ 
+}
+#mid {
+    height: 540px; /*18w*/
+    width: 540px; /*18w*/
+    padding-top: 110px; /*(540 - 8h) / 2*/
+    padding-bottom: 110px; /*(540 - 8h) / 2*/
+    padding-left: 90px; /*(540 - 12w) / 2*/
+    padding-right: 90px; /*(540 - 12w) / 2*/
+}
+
   .tile-horiz {
       width: 40px;
       height: 30px;
@@ -261,21 +275,6 @@ body, html {
 }
 .tile-vert:focus {
     outline: none;
-}
-.score-text {
-    font-size: 30px;
-}
-#first-row {
-    height: 240px;
-    text-align: center;
-}
-#second-row {
-    height: 472px; 
-    position: relative;
-}
-#third-row {
-    height: 240px; 
-    position: relative; 
 }
 .row {
     margin-left: 0px;
