@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahjong</title>
+    <link rel="stylesheet" href="styles/main.css"></link>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
+    </head>
+    <body>
+        <div class="bg">
+            <h1 id="header">Please select the settings for your game</h1>
+            <div id="dropdown-div" class="row">
+                <div id="player-select">
+                    <h4>Player 1</h4>
+                    <select id="p1">
+                        <option value="player">Player</option>
+                        <option value="cpu" disabled="true">Computer</option>
+                    </select>
+                </div>
+                <div id="player-select">
+                    <h4>Player 2</h4>
+                    <select id="p2">
+                        <option value="player">Player</option>
+                        <option value="cpu">Computer</option>
+                    </select>
+                </div>
+                <div id="player-select">
+                    <h4>Player 3</h4>
+                    <select id="p3">
+                        <option value="player">Player</option>
+                        <option value="cpu">Computer</option>
+                    </select>
+                </div>
+                <div id="player-select">
+                    <h4>Player 4</h4>
+                    <select id="p4">
+                        <option value="player">Player</option>
+                        <option value="cpu">Computer</option>
+                    </select>
+                </div>
+            </div>
+            <div style="text-align: center; padding-top: 100px;">
+                <a onclick="getTypes()" id="buttons" href="game.html">Start Game</a>
+            </div>
+        </div>
+        <script type="text/javascript">
+        function getTypes() {
+            localStorage.setItem("p1Type", document.getElementById("p1").value);
+            localStorage.setItem("p2Type", document.getElementById("p2").value);
+            localStorage.setItem("p3Type", document.getElementById("p3").value);
+            localStorage.setItem("p4Type", document.getElementById("p4").value);
+            return true;
+        }
+        </script>
+    </body>
+</html>

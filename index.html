@@ -3,16 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahjong</title>
-    <link rel="stylesheet" href="styles/main.css"></link>
-    </head>
-    <body>
-        <div class="bg">
-            <h1 id="header">Welcome to Mahjong!</h1>
-            <div id="buttons-div">
-                <a id="buttons" href="how-to-play.html">How To Play</a>
-                <a id="buttons" href="game-setup.html">Start</a>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
+    <link rel="stylesheet" href="styles/index.css"><link>
+    <title>Jacob Tam</title>
+</head>
+<body>
+    <section id="navigation">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(33, 0, 80); padding: 0px;">
+            <div class="container">
+                <button id="nav-dropdown-button"class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav" style="margin-left:auto; margin-right:0;">
+                        <li class="nav-item dropdown" style="padding-right: 20px;">
+                            <div class="btn-group">
+                                <a class="btn" id="nav-button" type="button" href="mahjong.html" style="color: black;">Mahjong</a>
+                                <!--<a class="nav-link btn dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>-->
+                            </div>
+                            <!--<div class="dropdown-menu aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="sales/index.html">Subpage 1</a>
+                                <a class="dropdown-item" href="sales/index.html">Subpage 2</a>
+                                <a class="dropdown-item" href="sales/index.html">Subpage 3</a>
+                            </div> -->
+                        </li>
+                        <li class="nav-item dropdown" style="padding-right: 20px;">
+                            <div class="btn-group">
+                                <a class="btn" id="nav-button" type="button" href="ja-website.html" style="color: black;"></a>
+                                <!--<a class="nav-link btn dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a> -->
+                            </div>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="padding: 0px; background-color: rgb(255, 228, 182); border: 1px solid black; border-radius: 10px;">  
+                                <a class="dropdown-item" id="dropdown-button" style="margin-bottom: 5px; color: black;" href="aboutUs/aboutJA.html">About Junior Achievement</a>
+                                <a class="dropdown-item" id="dropdown-button" style="color: black;" href="aboutUs/aboutIGWM.html">About IG Wealth Management</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown"  style="padding-right: 20px;">
+                            <div class="btn-group">
+                                <a class="btn" id="nav-button" type="button" href="contactUs/index.html" style="color: black;">Contact Us</a>
+                                <!--<a class="nav-link btn dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a> -->
+                            </div>
+                            <!--<div class="dropdown-menu aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="contactUs/index.html">Subpage 1</a>
+                                <a class="dropdown-item" href="contactUs/index.html">Subpage 2</a>
+                                <a class="dropdown-item" href="contactUs/index.html">Subpage 3</a>
+                            </div> -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </section>
+    <section id="banner" class="container-fluid shadow" style="background-color: rgb(25, 1, 56);">
+        <img id="headshot" src="images/jacob.jpg"></img>
+        <h1>Hi! My name is Jacob!</h1>
+        <h2>Welcome to my personal website</h2>
+    </section>
+    <section id="main">
+        <div id="rect" class="row">
+            <div class="individual">
+                <img src="images/mahjong.jpg" class="individual-photo"></img>
+                <div class="text">
+                    <h1 style="color: black; margin-bottom: 0px;">Mahjong</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+                <a href="mahjong.html" class="my-button">Learn More</a>
+            </div>
+            <div class="individual">
+                <img src="images/JuniorAchievement.png" class="individual-photo"></img>
+                <div class="text">
+                    <h1 style="color: black; margin-bottom: 0px; font-size: 28px;">Junior Achievement Website</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+                <a href="ja-website.html" class="my-button">Learn More</a>
+            </div>
+            <div class="individual">
+                <img src="images/form.png" class="individual-photo"></img>
+                <div class="text">
+                    <h1 style="color: black; margin-bottom: 0px;">Input Form</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+                <a href="input-form.html" class="my-button">Learn More</a>
             </div>
         </div>
-    </body>
+    </section>
+</body>
 </html>
