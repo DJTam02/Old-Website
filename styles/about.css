@@ -1,0 +1,135 @@
+#nav-button {
+    font-weight: bold;
+    font-size: 25px;
+    color: black;
+    font-family: 'Abel', sans-serif;
+}
+.btn {
+    text-align: center;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    transition: 0.5s;
+    color: black;
+}
+.btn:hover {
+    color: black;
+    text-decoration: none;
+    transition: 0.25s;
+    background-color: #fff6f0;
+}
+.btn:focus {
+    outline: none;
+}
+.parallax-window {
+    z-index: -5;
+    width: 100%;
+    min-height: 500px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+#about {
+    position: relative;
+    left: 0px;
+    top: 31vh;
+    background-color: white;
+    height: 100vh;
+    width: 100%;
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+h1, h3, h4, h5, h6, p, a {
+    font-family: 'Montserrat', sans-serif;
+    margin: 5.5vh;
+ }
+ h2 {
+    font-family: 'Montserrat', sans-serif;
+ }
+ h1 {
+     font-size: 60px;
+     margin: 10vh;
+ }
+ a {
+     margin: 0px;
+ }
+ #java-logo {
+     position: absolute;
+     top: 5vh;
+     left: 10vw;
+     width: auto;
+     height: 8vw;
+     transform: rotate(27deg);
+ }
+ #python-logo {
+     position: absolute;
+     height: 7vw;
+     width: auto;
+     transform: rotate(-46deg);
+     right: 18vw;
+     top: 10vh;
+ }
+ #html-logo {
+    position: absolute;
+    height: 11vw;
+    width: auto;
+    transform: rotate(-23deg);
+    left: 1vw;
+    top: 24vh;
+ }
+ #javascript-logo {
+    position: absolute;
+    height: 9vw;
+    width: auto;
+    transform: rotate(54deg);
+    right: 3vw;
+    top: 5vh;
+ }
+ #css-logo {
+    position: absolute;
+    height: 10vw;
+    width: auto;
+    transform: rotate(37deg);
+    left: 3vw;
+    top: 50%;
+ }
+ #php-logo {
+    position: absolute;
+    height: auto;
+    width: 8vw;
+    transform: rotate(-29deg);
+    right: 3vw;
+    top: 31%;
+ }
+ #sql-logo {
+    position: absolute;
+    height: 5vw;
+    width: auto;
+    transform: rotate(-42deg);
+    right: 4vw;
+    top: 47%;
+ }
+ #goalie-logo {
+    position: absolute;
+    height: 12vw;
+    width: auto;
+    transform: rotate(-31deg);
+    left: -1vw;
+    bottom: 1vh;
+ }
+ #trumpet-logo {
+    position: absolute;
+    height: auto;
+    width: 14vw;
+    transform: rotate(35deg);
+    right: 1vw;
+    bottom: 30vh;
+ }
+ #cube-logo {
+    position: absolute;
+    height: auto;
+    width: 9vw;
+    transform: rotate(-17deg);
+    right: 3vw;
+    bottom: 10vh;
+ }
