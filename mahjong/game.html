@@ -211,12 +211,12 @@
                 <div id="bot-hand">
                     <button draggable="true" ondragstart="drag(event)" id="hand-1" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
                     --><button draggable="true" ondragstart="drag(event)" id="hand-2" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-3" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-4" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-5" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-6" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-7" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-8" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
+                    --><button draggable="true" ondragstart="drag(event)" id="hand-3" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
+                    --><button draggable="true" ondragstart="drag(event)" id="hand-4" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
+                    --><button draggable="true" ondragstart="drag(event)" id="hand-5" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
+                    --><button draggable="true" ondragstart="drag(event)" id="hand-6" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
+                    --><button draggable="true" ondragstart="drag(event)" id="hand-7" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
+                    --><button draggable="true" ondragstart="drag(event)" id="hand-8" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
                     --><button draggable="true" ondragstart="drag(event)" id="hand-9" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
                     --><button draggable="true" ondragstart="drag(event)" id="hand-10" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
                     --><button draggable="true" ondragstart="drag(event)" id="hand-11" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
@@ -336,6 +336,10 @@
               ev.preventDefault();
               var data = ev.dataTransfer.getData("text");
               ev.target.appendChild(document.getElementById(data));
+              var botHand = document.getElementById("bot-hand").getElementsByClassName("tile-vert");
+              for (let i = 0; i < botHand.length; i++) {
+                  botHand[i].setAttribute('draggable', false);
+              }
             }
         </script>
     </body>
