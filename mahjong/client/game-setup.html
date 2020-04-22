@@ -4,54 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mahjong</title>
-    <link rel="stylesheet" href="styles/main.css"></link>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
+    <link rel="stylesheet" href="styles/main.css"></link>
     </head>
-    <body>
+    <body onload="update()">
         <div class="bg">
+            <div id="players">
+                <p>Players Connected</p>
+                <p id="player-num">0</p>
+            </div>
             <h1 id="header">Please select the settings for your game</h1>
             <div id="dropdown-div" class="row">
                 <div id="player-select">
                     <h4>Player 1</h4>
-                    <select id="p1">
-                        <option value="player">Player</option>
-                        <option value="cpu" disabled="true">Computer</option>
-                    </select>
+                    <form id="p1">
+                        Name <input type="text" name="p1name" id="p1name"><br>
+                        <input type="checkbox" name="p1computer" id="p1computer" value="true">
+                        <label style="margin-top: 15px; margin-bottom: 15px;">Computer Player</label><br>
+                        <button id="p1Confirm">Confirm</button>
+                    </form>
+                    <div id="p1Cancel">
+                        <h6 id="p1name-filled"></h6>
+                        <button onclick="cancelConfirm('p1')">Cancel</button>
+                    </div>
                 </div>
                 <div id="player-select">
                     <h4>Player 2</h4>
-                    <select id="p2">
-                        <option value="player">Player</option>
-                        <option value="cpu">Computer</option>
-                    </select>
+                    <form id="p2" onsubmit="return submit('p2')">
+                        Name <input type="text" name="p2name" id="p2name"><br>
+                        <input type="checkbox" name="p2computer" id="p2computer" value="true">
+                        <label style="margin-top: 15px; margin-bottom: 15px;">Computer Player</label><br>
+                        <button id="p2Confirm">Confirm</button>
+                    </form>
+                    <div id="p2Cancel">
+                        <h6 id="p2name-filled"></h6>
+                        <button onclick="cancelConfirm('p2')">Cancel</button>
+                    </div>
                 </div>
                 <div id="player-select">
                     <h4>Player 3</h4>
-                    <select id="p3">
-                        <option value="player">Player</option>
-                        <option value="cpu">Computer</option>
-                    </select>
+                    <form id="p3" onsubmit="return submit('p3')">
+                        Name <input type="text" name="p3name" id="p3name"><br>
+                        <input type="checkbox" name="p3computer" id="p3computer" value="true">
+                        <label style="margin-top: 15px; margin-bottom: 15px;">Computer Player</label><br>
+                        <button id="p3Confirm">Confirm</button>
+                    </form>
+                    <div id="p3Cancel">
+                        <h6 id="p3name-filled"></h6>
+                        <button onclick="cancelConfirm('p3')">Cancel</button>
+                    </div>
                 </div>
                 <div id="player-select">
                     <h4>Player 4</h4>
-                    <select id="p4">
-                        <option value="player">Player</option>
-                        <option value="cpu">Computer</option>
-                    </select>
+                    <form id="p4" onsubmit="return submit('p4')">
+                        Name <input type="text" name="p4name" id="p4name"><br>
+                        <input type="checkbox" name="p4computer" id="p4computer" value="true">
+                        <label style="margin-top: 15px; margin-bottom: 15px;">Computer Player</label><br>
+                        <button id="p4Confirm">Confirm</button> 
+                    </form>
+                    <div id="p4Cancel">
+                        <h6 id="p4name-filled"></h6>
+                        <button onclick="cancelConfirm('p4')">Cancel</button>
+                    </div>
                 </div>
             </div>
             <div style="text-align: center; padding-top: 100px;">
-                <a onclick="getTypes()" id="buttons" href="game.html">Start Game</a>
+                <button onclick="checkPlayers()" id="buttons">Start Game</button>
             </div>
         </div>
-        <script type="text/javascript">
-        function getTypes() {
-            localStorage.setItem("p1Type", document.getElementById("p1").value);
-            localStorage.setItem("p2Type", document.getElementById("p2").value);
-            localStorage.setItem("p3Type", document.getElementById("p3").value);
-            localStorage.setItem("p4Type", document.getElementById("p4").value);
-            return true;
-        }
-        </script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="scripts/client.js"></script>
     </body>
 </html>
