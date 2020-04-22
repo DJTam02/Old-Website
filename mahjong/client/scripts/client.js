@@ -15,7 +15,7 @@ const confirm = (info) => {
     } else {
         document.getElementById(info[0] + "name-filled").innerHTML = info[1];
     }
-    document.getElementById(info[0] + "computer").setAttribute("checked", false);
+    document.getElementById(info[0] + "computer").removeAttribute("checked");
     document.getElementById(info[0] + "name").value = "";
     document.getElementById(info[0]).style.display = "none";
     document.getElementById(info[0] + "Cancel").style.display = "inline";
@@ -23,6 +23,19 @@ const confirm = (info) => {
 const cancel = (player) => {
     document.getElementById(player).style.display = "inline";
     document.getElementById(player + "Cancel").style.display = "none";
+    document.getElementById("p1name").removeAttribute("disabled");
+    document.getElementById("p2name").removeAttribute("disabled");
+    document.getElementById("p3name").removeAttribute("disabled");
+    document.getElementById("p4name").removeAttribute("disabled");
+    document.getElementById("p1Confirm").removeAttribute("disabled");
+    document.getElementById("p2Confirm").removeAttribute("disabled");
+    document.getElementById("p3Confirm").removeAttribute("disabled");
+    document.getElementById("p4Confirm").removeAttribute("disabled");
+    document.getElementById("p4computer").removeAttribute("disabled");
+    document.getElementById("p2computer").removeAttribute("disabled");
+    document.getElementById("p3computer").removeAttribute("disabled");
+    document.getElementById("p1computer").removeAttribute("disabled");
+    document.getElementById(player + "cancel-button").setAttribute("disabled", true);
 }
 //Game
 
@@ -49,6 +62,16 @@ document.getElementById("p1Confirm").addEventListener('click', function(e) {
         info[1] = document.getElementById("p1name").value;
         info[2] = document.getElementById("p1computer").checked;
         sock.emit('confirm', info);
+        document.getElementById("p2name").setAttribute("disabled", true);
+        document.getElementById("p3name").setAttribute("disabled", true);
+        document.getElementById("p4name").setAttribute("disabled", true);
+        document.getElementById("p2Confirm").setAttribute("disabled", true);
+        document.getElementById("p3Confirm").setAttribute("disabled", true);
+        document.getElementById("p4Confirm").setAttribute("disabled", true);
+        document.getElementById("p4computer").setAttribute("disabled", true);
+        document.getElementById("p2computer").setAttribute("disabled", true);
+        document.getElementById("p3computer").setAttribute("disabled", true);
+        document.getElementById("p1cancel-button").removeAttribute("disabled");
     }
     e.preventDefault();
 });
@@ -61,6 +84,16 @@ document.getElementById("p2Confirm").addEventListener('click', function(e) {
         info[1] = document.getElementById("p2name").value;
         info[2] = document.getElementById("p2computer").checked;
         sock.emit('confirm', info);
+        document.getElementById("p1name").setAttribute("disabled", true);
+        document.getElementById("p3name").setAttribute("disabled", true);
+        document.getElementById("p4name").setAttribute("disabled", true);
+        document.getElementById("p1Confirm").setAttribute("disabled", true);
+        document.getElementById("p3Confirm").setAttribute("disabled", true);
+        document.getElementById("p4Confirm").setAttribute("disabled", true);
+        document.getElementById("p1computer").setAttribute("disabled", true);
+        document.getElementById("p4computer").setAttribute("disabled", true);
+        document.getElementById("p3computer").setAttribute("disabled", true);
+        document.getElementById("p2cancel-button").removeAttribute("disabled");
     }
     e.preventDefault();
 });
@@ -73,6 +106,16 @@ document.getElementById("p3Confirm").addEventListener('click', function(e) {
         info[1] = document.getElementById("p3name").value;
         info[2] = document.getElementById("p3computer").checked;
         sock.emit('confirm', info);
+        document.getElementById("p2name").setAttribute("disabled", true);
+        document.getElementById("p1name").setAttribute("disabled", true);
+        document.getElementById("p4name").setAttribute("disabled", true);
+        document.getElementById("p2Confirm").setAttribute("disabled", true);
+        document.getElementById("p1Confirm").setAttribute("disabled", true);
+        document.getElementById("p4Confirm").setAttribute("disabled", true);
+        document.getElementById("p1computer").setAttribute("disabled", true);
+        document.getElementById("p2computer").setAttribute("disabled", true);
+        document.getElementById("p4computer").setAttribute("disabled", true);
+        document.getElementById("p3cancel-button").removeAttribute("disabled");
     }
     e.preventDefault();
 });
@@ -85,6 +128,17 @@ document.getElementById("p4Confirm").addEventListener('click', function(e) {
         info[1] = document.getElementById("p4name").value;
         info[2] = document.getElementById("p4computer").checked;
         sock.emit('confirm', info);
+        document.getElementById("p2name").setAttribute("disabled", true);
+        document.getElementById("p3name").setAttribute("disabled", true);
+        document.getElementById("p1name").setAttribute("disabled", true);
+        document.getElementById("p2Confirm").setAttribute("disabled", true);
+        document.getElementById("p3Confirm").setAttribute("disabled", true);
+        document.getElementById("p1Confirm").setAttribute("disabled", true);
+        document.getElementById("p1computer").setAttribute("disabled", true);
+        document.getElementById("p2computer").setAttribute("disabled", true);
+        document.getElementById("p3computer").setAttribute("disabled", true);
+        document.getElementById("p4cancel-button").removeAttribute("disabled");
+        
     }
     e.preventDefault();
 });
@@ -92,6 +146,7 @@ sock.on('confirm', confirm);
 
 function cancelConfirm(player) {
     sock.emit('cancel', player);
+    document.getElementById(player + "cancel-button").removeAttribute("disabled");
 }
 sock.on('cancel', cancel);
 function update() {
