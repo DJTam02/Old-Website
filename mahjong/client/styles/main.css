@@ -57,13 +57,11 @@ body, html {
       background-color: white;
       border-radius: 25px;
       padding-top: 10px;
-      padding-bottom: 65px;
+      padding-bottom: 40px;
       margin: auto;
   }
   #p1, #p2, #p3, #p4 {
       padding: 5px;
-      border: 1px solid black;
-      border-radius: 5px;
   }
   #p1, #p2, #p3, #p4:focus {
       outline: none;
@@ -318,4 +316,30 @@ body, html {
 .row {
     margin-left: 0px;
     margin-right: 0px;
+}
+#players {
+    position: absolute;
+    right: 0px;
+    top: 50px;
+    min-height: 100px;
+    background-color: white;
+    border: 1.5px solid black;  
+    border-right: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px; 
+    min-width: 15vw;
+    text-align: center;
+    font-size: 20px;
+}
+#opening-text{
+    font-size: 5vw;
+}
+h1, h2, h3, h4, h5, h6, p {
+    color: black;
+}
+#p1Cancel, #p2Cancel, #p3Cancel, #p4Cancel {
+    display: none;
+}
+p {
+    margin-top: 20px;
 }
