@@ -18,9 +18,15 @@
                 <div id="player-select">
                     <h4>Player 1</h4>
                     <form id="p1">
-                        Name <input type="text" name="p1name" id="p1name"><br>
-                        <input type="checkbox" name="p1computer" id="p1computer" value="true">
-                        <label style="margin-top: 15px; margin-bottom: 15px;">Computer Player</label><br>
+                        Name <input type="text" name="p1name" id="p1name" oninput="typing('p1')"><br>
+                        <input type="checkbox" name="p1computer" id="p1computer" value="true" onclick="cpuTrue('p1')">
+                        <label style="margin-top: 15px;">Computer Player</label><br>
+                        <input type="checkbox" name="p1computerl1" id="p1computerl1" value="1" onclick="isChecked('p1', '1')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p1checkLabel">Level 1</label>
+                        <input type="checkbox" name="p1computerl2" id="p1computerl2" value="2" onclick="isChecked('p1', '2')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p1checkLabel">Level 2</label>
+                        <input type="checkbox" name="p1computerl3" id="p1computerl3" value="3" onclick="isChecked('p1', '3')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p1checkLabel">Level 3</label><br>
                         <button id="p1Confirm">Confirm</button>
                     </form>
                     <div id="p1Cancel">
@@ -31,9 +37,15 @@
                 <div id="player-select">
                     <h4>Player 2</h4>
                     <form id="p2" onsubmit="return submit('p2')">
-                        Name <input type="text" name="p2name" id="p2name"><br>
-                        <input type="checkbox" name="p2computer" id="p2computer" value="true">
-                        <label style="margin-top: 15px; margin-bottom: 15px;">Computer Player</label><br>
+                        Name <input type="text" name="p2name" id="p2name" oninput="typing('p2')"><br>
+                        <input checked type="checkbox" name="p2computer" id="p2computer" value="true" onclick="cpuTrue('p2')">
+                        <label style="margin-top: 15px;">Computer Player</label><br>
+                        <input checked type="checkbox" name="p2computerl1" id="p2computerl1" value="1" onclick="isChecked('p2', '1')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p2checkLabel">Level 1</label>
+                        <input type="checkbox" name="p2computerl2" id="p2computerl2" value="2" onclick="isChecked('p2', '2')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p2checkLabel">Level 2</label>
+                        <input type="checkbox" name="p2computerl3" id="p2computerl3" value="3" onclick="isChecked('p2', '3')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p2checkLabel">Level 3</label><br>
                         <button id="p2Confirm">Confirm</button>
                     </form>
                     <div id="p2Cancel">
@@ -44,9 +56,15 @@
                 <div id="player-select">
                     <h4>Player 3</h4>
                     <form id="p3" onsubmit="return submit('p3')">
-                        Name <input type="text" name="p3name" id="p3name"><br>
-                        <input type="checkbox" name="p3computer" id="p3computer" value="true">
-                        <label style="margin-top: 15px; margin-bottom: 15px;">Computer Player</label><br>
+                        Name <input type="text" name="p3name" id="p3name" oninput="typing('p3')"><br>
+                        <input checked type="checkbox" name="p3computer" id="p3computer" value="true" onclick="cpuTrue('p3')">
+                        <label style="margin-top: 15px;">Computer Player</label><br>
+                        <input type="checkbox" name="p3computerl1" id="p3computerl1" value="1" onclick="isChecked('p3', '1')">
+                        <label checked style="margin-top: 15px; margin-bottom: 15px;" class="p3checkLabel">Level 1</label>
+                        <input type="checkbox" name="p3computerl2" id="p3computerl2" value="2" onclick="isChecked('p3', '2')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p3checkLabel">Level 2</label>
+                        <input type="checkbox" name="p3computerl3" id="p3computerl3" value="3" onclick="isChecked('p3', '3')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p3checkLabel">Level 3</label><br>
                         <button id="p3Confirm">Confirm</button>
                     </form>
                     <div id="p3Cancel">
@@ -57,9 +75,15 @@
                 <div id="player-select">
                     <h4>Player 4</h4>
                     <form id="p4" onsubmit="return submit('p4')">
-                        Name <input type="text" name="p4name" id="p4name"><br>
-                        <input type="checkbox" name="p4computer" id="p4computer" value="true">
-                        <label style="margin-top: 15px; margin-bottom: 15px;">Computer Player</label><br>
+                        Name <input type="text" name="p4name" id="p4name" oninput="typing('p4')"><br>
+                        <input checked type="checkbox" name="p4computer" id="p4computer" value="true" onclick="cpuTrue('p4')">
+                        <label style="margin-top: 15px;">Computer Player</label><br>
+                        <input checked type="checkbox" name="p4computerl1" id="p4computerl1" value="1" onclick="isChecked('p4', '1')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p4checkLabel">Level 1</label>
+                        <input type="checkbox" name="p4computerl2" id="p4computerl2" value="2" onclick="isChecked('p4', '2')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p4checkLabel">Level 2</label>
+                        <input type="checkbox" name="p4computerl3" id="p4computerl3" value="3" onclick="isChecked('p4', '3')">
+                        <label style="margin-top: 15px; margin-bottom: 15px;" class="p4checkLabel">Level 3</label><br>
                         <button id="p4Confirm">Confirm</button> 
                     </form>
                     <div id="p4Cancel">

@@ -9,6 +9,10 @@
     </head>
     <body id="full" onresize="resize()" onload="init()">
         <div class="game-board">
+            <p id="left-player-name"></p>
+            <p id="top-player-name"></p>
+            <p id="right-player-name"></p>
+            <p id="bottom-player-name"></p>
             <div id="top-left" class="row">
                 <div id="left-flower-and-fin">
                     <div id="left-flower">
@@ -73,7 +77,7 @@
                 </div>
                 <div id="round-wind">
                     <p class="text">Round Wind</p>
-                    <img src="resources/images/east.jpg" style="width: auto; height: 50%;"></img>
+                    <img id="round-wind-img" src="resources/images/east.jpg" style="width: auto; height: 50%;"></img>
                 </div>
             </div>
             <div id="square">
@@ -209,21 +213,21 @@
                     --><button class="tile-horiz"></button>
                 </div>
                 <div id="bot-hand">
-                    <button draggable="true" ondragstart="drag(event)" id="hand-1" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-2" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-3" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-4" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-5" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-6" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-7" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-8" class="tile-vert " onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-9" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-10" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-11" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-12" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-13" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button draggable="true" ondragstart="drag(event)" id="hand-14" class="tile-vert" onclick="swap(this.id)"><span></span></button><!--
-                    --><button id="roll-dice" onclick="rollDice()">Roll Dice</button>
+                    <button draggable="false" ondragstart="drag(event)" id="hand-1" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-2" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-3" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-4" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-5" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-6" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-7" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-8" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-9" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-10" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-11" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-12" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-13" class="tile-vert"><span></span></button><!--
+                    --><button draggable="false" ondragstart="drag(event)" id="hand-14" class="tile-vert"><span></span></button><!--
+                    --><button id="roll-dice">Roll Dice</button>
                 </div>
             </div>
             <div class="row" style="position: relative;">
@@ -282,7 +286,7 @@
                 </div>
                 <div id="bot-right" class="row">
                     <div id="info">
-                        <p class="text">Please click the "Roll Dice" button to roll the dice.</p>
+                        <p class="text" id="">Please click the "Roll Dice" button to roll the dice.</p>
                     </div>
                     <div id="right-flower-and-fin">
                         <div id="right-fin">
@@ -323,26 +327,7 @@
         <script src="scripts/index.js" charset="UTF-8">
             var x, w, y, horiz, vert, text;
         </script>
-        <script>
-            function allowDrop(ev) {
-              ev.preventDefault();
-            }
-            
-            function drag(ev) {
-              ev.dataTransfer.setData("text", ev.target.id);
-            }
-            
-            function drop(ev) {
-              ev.preventDefault();
-              var data = ev.dataTransfer.getData("text");
-              ev.target.appendChild(document.getElementById(data));
-              var botHand = document.getElementById("bot-hand").getElementsByClassName("tile-vert");
-              for (let i = 0; i < botHand.length; i++) {
-                  botHand[i].setAttribute('draggable', false);
-              }
-            }
-        </script>
-        <script src="../vendor/phaser.min.js"></script>
-        <script src="https://simple-car-game.herokuapp.com/socket.io/socket.io.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="scripts/game.js"></script>
     </body>
 </html>

@@ -11,7 +11,7 @@ const disconnection = (connectNum) => {
 }
 const confirm = (info) => {
     if (info[2] == true) {
-        document.getElementById(info[0] + "name-filled").innerHTML = info[1] + " (CPU)";
+        document.getElementById(info[0] + "name-filled").innerHTML = info[1] + " (CPU Level " + info[3] + ")";
     } else {
         document.getElementById(info[0] + "name-filled").innerHTML = info[1];
     }
@@ -36,6 +36,46 @@ const cancel = (player) => {
     document.getElementById("p3computer").removeAttribute("disabled");
     document.getElementById("p1computer").removeAttribute("disabled");
     document.getElementById(player + "cancel-button").setAttribute("disabled", true);
+    document.getElementById(player + "computerl1").checked = false;
+    document.getElementById(player + "computerl2").checked = false;
+    document.getElementById(player + "computerl3").checked = false;
+    document.getElementById(player + "computer").checked = false;
+    document.getElementById(player + "computerl1").style.display = "none";
+    document.getElementById(player + "computerl2").style.display = "none";
+    document.getElementById(player + "computerl3").style.display = "none";
+    var el = document.getElementsByClassName(player + "checkLabel");
+    for (var i = 0; i < el.length; i++) {
+        el[i].style.display = "none";
+    }
+}
+const cpuSelected = (player, isSelected) => {
+    var el = document.getElementsByClassName(player + "checkLabel");
+    if (isSelected) {
+        document.getElementById(player + "computer").setAttribute("checked", true);
+        document.getElementById(player + "computerl1").style.display = "inline";
+        document.getElementById(player + "computerl2").style.display = "inline";
+        document.getElementById(player + "computerl3").style.display = "inline";
+        for (var i = 0; i < el.length; i++) {
+            el[i].style.display = "inline";
+        }
+    } else {
+        document.getElementById(player + "computer").removeAttribute("checked");
+        document.getElementById(player + "computerl1").style.display = "none";
+        document.getElementById(player + "computerl2").style.display = "none";
+        document.getElementById(player + "computerl3").style.display = "none";
+        for (var i = 0; i < el.length; i++) {
+            el[i].style.display = "none";
+        }
+    }
+}
+const boxChecked = (parent, level) => {
+    document.getElementById(parent + "computerl1").checked = false;
+    document.getElementById(parent + "computerl2").checked = false;
+    document.getElementById(parent + "computerl3").checked = false;
+    document.getElementById(parent + "computerl" + level).checked = true;
+}
+const updateField = (player, text) => {
+    document.getElementById(player + "name").value = text;
 }
 //Game
 
@@ -57,20 +97,31 @@ document.getElementById("p1Confirm").addEventListener('click', function(e) {
     if (document.getElementById("p1name").value.trim() == "") { 
         alert("Please enter a valid name!");
     } else {
-        let info = new Array(3);
+        let info = new Array(4);
         info[0] = "p1";
         info[1] = document.getElementById("p1name").value;
         info[2] = document.getElementById("p1computer").checked;
+        if (document.getElementById("p1computerl1").checked) {
+            info[3] = document.getElementById("p1computerl1").value;
+        } else if(document.getElementById("p1computerl2").checked) {
+            info[3] = document.getElementById("p1computerl2").value;
+        } else {
+            info[3] = document.getElementById("p1computerl3").value;
+        }
         sock.emit('confirm', info);
-        document.getElementById("p2name").setAttribute("disabled", true);
-        document.getElementById("p3name").setAttribute("disabled", true);
-        document.getElementById("p4name").setAttribute("disabled", true);
-        document.getElementById("p2Confirm").setAttribute("disabled", true);
-        document.getElementById("p3Confirm").setAttribute("disabled", true);
-        document.getElementById("p4Confirm").setAttribute("disabled", true);
-        document.getElementById("p4computer").setAttribute("disabled", true);
-        document.getElementById("p2computer").setAttribute("disabled", true);
-        document.getElementById("p3computer").setAttribute("disabled", true);
+        if (!info[2]) {
+            document.getElementById("p2name").setAttribute("disabled", true);
+            document.getElementById("p3name").setAttribute("disabled", true);
+            document.getElementById("p4name").setAttribute("disabled", true);
+            document.getElementById("p2Confirm").setAttribute("disabled", true);
+            document.getElementById("p3Confirm").setAttribute("disabled", true);
+            document.getElementById("p4Confirm").setAttribute("disabled", true);
+            document.getElementById("p4computer").setAttribute("disabled", true);
+            document.getElementById("p2computer").setAttribute("disabled", true);
+            document.getElementById("p3computer").setAttribute("disabled", true);
+            localStorage.setItem('player-num', 1);
+            localStorage.setItem('player-name', info[1]);
+        }
         document.getElementById("p1cancel-button").removeAttribute("disabled");
     }
     e.preventDefault();
@@ -83,16 +134,27 @@ document.getElementById("p2Confirm").addEventListener('click', function(e) {
         info[0] = "p2";
         info[1] = document.getElementById("p2name").value;
         info[2] = document.getElementById("p2computer").checked;
+        if (document.getElementById("p2computerl1").checked) {
+            info[3] = document.getElementById("p2computerl1").value;
+        } else if(document.getElementById("p2computerl2").checked) {
+            info[3] = document.getElementById("p2computerl2").value;
+        } else {
+            info[3] = document.getElementById("p2computerl3").value;
+        }
         sock.emit('confirm', info);
-        document.getElementById("p1name").setAttribute("disabled", true);
-        document.getElementById("p3name").setAttribute("disabled", true);
-        document.getElementById("p4name").setAttribute("disabled", true);
-        document.getElementById("p1Confirm").setAttribute("disabled", true);
-        document.getElementById("p3Confirm").setAttribute("disabled", true);
-        document.getElementById("p4Confirm").setAttribute("disabled", true);
-        document.getElementById("p1computer").setAttribute("disabled", true);
-        document.getElementById("p4computer").setAttribute("disabled", true);
-        document.getElementById("p3computer").setAttribute("disabled", true);
+        if (!info[2]) {
+            document.getElementById("p1name").setAttribute("disabled", true);
+            document.getElementById("p3name").setAttribute("disabled", true);
+            document.getElementById("p4name").setAttribute("disabled", true);
+            document.getElementById("p1Confirm").setAttribute("disabled", true);
+            document.getElementById("p3Confirm").setAttribute("disabled", true);
+            document.getElementById("p4Confirm").setAttribute("disabled", true);
+            document.getElementById("p1computer").setAttribute("disabled", true);
+            document.getElementById("p4computer").setAttribute("disabled", true);
+            document.getElementById("p3computer").setAttribute("disabled", true);
+            localStorage.setItem('player-num', 2);
+            localStorage.setItem('player-name', info[1]);
+        }
         document.getElementById("p2cancel-button").removeAttribute("disabled");
     }
     e.preventDefault();
@@ -105,16 +167,27 @@ document.getElementById("p3Confirm").addEventListener('click', function(e) {
         info[0] = "p3";
         info[1] = document.getElementById("p3name").value;
         info[2] = document.getElementById("p3computer").checked;
+        if (document.getElementById("p3computerl1").checked) {
+            info[3] = document.getElementById("p3computerl1").value;
+        } else if(document.getElementById("p3computerl2").checked) {
+            info[3] = document.getElementById("p3computerl2").value;
+        } else {
+            info[3] = document.getElementById("p3computerl3").value;
+        }
         sock.emit('confirm', info);
-        document.getElementById("p2name").setAttribute("disabled", true);
-        document.getElementById("p1name").setAttribute("disabled", true);
-        document.getElementById("p4name").setAttribute("disabled", true);
-        document.getElementById("p2Confirm").setAttribute("disabled", true);
-        document.getElementById("p1Confirm").setAttribute("disabled", true);
-        document.getElementById("p4Confirm").setAttribute("disabled", true);
-        document.getElementById("p1computer").setAttribute("disabled", true);
-        document.getElementById("p2computer").setAttribute("disabled", true);
-        document.getElementById("p4computer").setAttribute("disabled", true);
+        if (!info[2]) {
+            document.getElementById("p2name").setAttribute("disabled", true);
+            document.getElementById("p1name").setAttribute("disabled", true);
+            document.getElementById("p4name").setAttribute("disabled", true);
+            document.getElementById("p2Confirm").setAttribute("disabled", true);
+            document.getElementById("p1Confirm").setAttribute("disabled", true);
+            document.getElementById("p4Confirm").setAttribute("disabled", true);
+            document.getElementById("p1computer").setAttribute("disabled", true);
+            document.getElementById("p2computer").setAttribute("disabled", true);
+            document.getElementById("p4computer").setAttribute("disabled", true);
+            localStorage.setItem('player-num', 3);
+            localStorage.setItem('player-name', info[1]);
+        }
         document.getElementById("p3cancel-button").removeAttribute("disabled");
     }
     e.preventDefault();
@@ -127,18 +200,28 @@ document.getElementById("p4Confirm").addEventListener('click', function(e) {
         info[0] = "p4";
         info[1] = document.getElementById("p4name").value;
         info[2] = document.getElementById("p4computer").checked;
+        if (document.getElementById("p4computerl1").checked) {
+            info[3] = document.getElementById("p4computerl1").value;
+        } else if(document.getElementById("p4computerl2").checked) {
+            info[3] = document.getElementById("p4computerl2").value;
+        } else {
+            info[3] = document.getElementById("p4computerl3").value;
+        }
         sock.emit('confirm', info);
-        document.getElementById("p2name").setAttribute("disabled", true);
-        document.getElementById("p3name").setAttribute("disabled", true);
-        document.getElementById("p1name").setAttribute("disabled", true);
-        document.getElementById("p2Confirm").setAttribute("disabled", true);
-        document.getElementById("p3Confirm").setAttribute("disabled", true);
-        document.getElementById("p1Confirm").setAttribute("disabled", true);
-        document.getElementById("p1computer").setAttribute("disabled", true);
-        document.getElementById("p2computer").setAttribute("disabled", true);
-        document.getElementById("p3computer").setAttribute("disabled", true);
+        if (!info[2]) {
+            document.getElementById("p2name").setAttribute("disabled", true);
+            document.getElementById("p3name").setAttribute("disabled", true);
+            document.getElementById("p1name").setAttribute("disabled", true);
+            document.getElementById("p2Confirm").setAttribute("disabled", true);
+            document.getElementById("p3Confirm").setAttribute("disabled", true);
+            document.getElementById("p1Confirm").setAttribute("disabled", true);
+            document.getElementById("p1computer").setAttribute("disabled", true);
+            document.getElementById("p2computer").setAttribute("disabled", true);
+            document.getElementById("p3computer").setAttribute("disabled", true);
+            localStorage.setItem('player-num', 4);
+            localStorage.setItem('player-name', info[1]);
+        }
         document.getElementById("p4cancel-button").removeAttribute("disabled");
-        
     }
     e.preventDefault();
 });
@@ -147,6 +230,8 @@ sock.on('confirm', confirm);
 function cancelConfirm(player) {
     sock.emit('cancel', player);
     document.getElementById(player + "cancel-button").removeAttribute("disabled");
+    localStorage.removeItem('player-num');
+    localStorage.removeItem('player-name');
 }
 sock.on('cancel', cancel);
 function update() {
@@ -190,6 +275,35 @@ function update() {
 function checkPlayers() {
     sock.emit('checkPlayers');
 }
+sock.on("allCPU", () => {
+    alert("There must be atleast one human player!");
+});
+sock.on("primary-player", (num) => {
+    if (localStorage.getItem("player-num") == num) {
+        localStorage.setItem("isPrimaryPlayer", true);
+    } else {
+        localStorage.setItem("isPrimaryPlayer", false);
+    }
+});
+function cpuTrue(player) {
+    var isSelected;
+    if (document.getElementById(player + "computer").checked) {
+        isSelected = true
+    } else {
+        isSelected = false;
+    }
+    sock.emit('cpuTrue', player, isSelected);
+}
+sock.on('cpuTrue', cpuSelected);
+function isChecked(parent, level) {
+    sock.emit('checkClicked', parent, level);
+}
+sock.on('checkClicked', boxChecked);
+function typing(player) {
+    var text = document.getElementById(player + "name").value;
+    sock.emit('typing', player, text);
+}
+sock.on('typing', updateField);
 sock.on('gameReady', () => {
     window.location.href = '/game.html';
 });

@@ -175,7 +175,7 @@ function resize() {
 
     document.getElementById("mid").style.width = (18 * w) + "px";
     document.getElementById("mid").style.height = (18 * w) + "px";
-    document.getElementById("mid").style.paddingTop = (((18 * w) - (8 * h)) / 2 + h) + "px";
+    document.getElementById("mid").style.paddingTop = ((((18 * w) - (8 * h)) / 2 + h) / 2) + "px";
     document.getElementById("mid").style.paddingBottom = (((18 * w) - (8 * h)) / 2) + "px";
     document.getElementById("mid").style.paddingLeft = ((6 * w) / 2) + "px";
     document.getElementById("mid").style.paddingLeft = ((6 * w) / 2) + "px";
@@ -204,8 +204,8 @@ function resize() {
         }
     }
 }
-var sum;
-function rollDice () {
+//var sum;
+/*function rollDice () {
     if (document.getElementById("roll-dice")) {
         var dice = [Math.floor(Math.random() * (6 - 1 + 1)) + 1, Math.floor(Math.random() * (6 - 1 + 1)) + 1, Math.floor(Math.random() * (6 - 1 + 1)) + 1]
         sum = dice[0] + dice[1] + dice[2];
@@ -280,16 +280,7 @@ function rollDice () {
     } else {
 
     }
-}
-function init() {
-    this.resize();
-    this.invis();
-    let temp = new Array(14);
-    botPlayer = new Player(temp, 1, "East", localStorage.getItem("p1Type"));
-    botPlayer = new Player(temp, 2, "South", localStorage.getItem("p2Type"));
-    botPlayer = new Player(temp, 3, "West", localStorage.getItem("p3Type"));
-    botPlayer = new Player(temp, 4, "North", localStorage.getItem("p4Type"));
-}
+}*/
 function invis() {
     var topHand = document.getElementById("top-hand").getElementsByClassName("tile-vert");
     for (let i = 0; i < topHand.length; i++) {
@@ -340,14 +331,14 @@ function invis() {
         rightFlower[i].style.opacity = "0%";
     }
 }
-function showPlayerHand() {
+/*function showPlayerHand() {   replaced: check server.js
     let allTiles = findAllTiles();
     let playerHand = new Array(14);
     var handLength = playerHand.length;
     for (let i = 0; i < playerHand.length; i++) {
         let ran = Math.floor(Math.random() * (42));
         if (allTiles[ran].remaining > 0) {
-            botPlayer.hand[i] = allTiles[ran];
+            player.hand[i] = allTiles[ran];
             let hand = document.getElementById("bot-hand").getElementsByClassName("tile-vert");
             hand[i].innerHTML = "<span>" + botPlayer.hand[i].unicode + "</span>";
             hand[i].style.padding = "0px";
@@ -361,75 +352,8 @@ function showPlayerHand() {
             i--;
         }
     }
-}
-class Tile {
-    constructor (newSuit, newValue, newRemaining, newUnicode) {
-        this.suit = newSuit;
-        this.value = newValue,
-        this.remaining = newRemaining;
-        this.unicode = newUnicode;
-    }
-}
-class Player {
-    constructor (newHand, newPos, newWind, newIsHuman) {
-        this.hand = newHand;
-        this.pos = newPos;
-        this.wind = newWind;
-        this.isHuman = newIsHuman;
-    }
-}
-function findAllTiles() {
-    let allTiles = new Array(42);
-    allTiles[0] = new Tile("East", 0, 4, "\ud83c\udc00");
-    allTiles[1] = new Tile("South", 0, 4, "\ud83c\udc01");
-    allTiles[2] = new Tile("West", 0, 4, "\ud83c\udc02");
-    allTiles[3] = new Tile("North", 0, 4, "\ud83c\udc03");
-    allTiles[4] = new Tile("Red", 0, 4, "\ud83c\udc04");
-    allTiles[5] = new Tile("Green", 0, 4, "\ud83c\udc05");
-    allTiles[6] = new Tile("Blue", 0, 4, "\ud83c\udc06");
-
-    allTiles[7] = new Tile("Number", 1, 4, "\ud83c\udc07");
-    allTiles[8] = new Tile("Number", 2, 4, "\ud83c\udc08");
-    allTiles[9] = new Tile("Number", 3, 4, "\ud83c\udc09");
-    allTiles[10] = new Tile("Number", 4, 4, "\ud83c\udc0A");
-    allTiles[11] = new Tile("Number", 5, 4, "\ud83c\udc0B");
-    allTiles[12] = new Tile("Number", 6, 4, "\ud83c\udc0C");
-    allTiles[13] = new Tile("Number", 7, 4, "\ud83c\udc0D");
-    allTiles[14] = new Tile("Number", 8, 4, "\ud83c\udc0E");
-    allTiles[15] = new Tile("Number", 9, 4, "\ud83c\udc0F");
-    
-    allTiles[16] = new Tile("Sticks", 1, 4, "\ud83c\udc10");
-    allTiles[17] = new Tile("Sticks", 2, 4, "\ud83c\udc11");
-    allTiles[18] = new Tile("Sticks", 3, 4, "\ud83c\udc12");
-    allTiles[19] = new Tile("Sticks", 4, 4, "\ud83c\udc13");
-    allTiles[20] = new Tile("Sticks", 5, 4, "\ud83c\udc14");
-    allTiles[21] = new Tile("Sticks", 6, 4, "\ud83c\udc15");
-    allTiles[22] = new Tile("Sticks", 7, 4, "\ud83c\udc16");
-    allTiles[23] = new Tile("Sticks", 8, 4, "\ud83c\udc17");
-    allTiles[24] = new Tile("Sticks", 9, 4, "\ud83c\udc18");
-
-    allTiles[25] = new Tile("Circles", 1, 4, "\ud83c\udc19");
-    allTiles[26] = new Tile("Circles", 2, 4, "\ud83c\udc1A");
-    allTiles[27] = new Tile("Circles", 3, 4, "\ud83c\udc1B");
-    allTiles[28] = new Tile("Circles", 4, 4, "\ud83c\udc1C");
-    allTiles[29] = new Tile("Circles", 5, 4, "\ud83c\udc1D");
-    allTiles[30] = new Tile("Circles", 6, 4, "\ud83c\udc1E");
-    allTiles[31] = new Tile("Circles", 7, 4, "\ud83c\udc1F");
-    allTiles[32] = new Tile("Circles", 8, 4, "\ud83c\udc20");
-    allTiles[33] = new Tile("Circles", 9, 4, "\ud83c\udc21");
-
-    allTiles[34] = new Tile("Plum", 1, 4, "\ud83c\udc22");
-    allTiles[35] = new Tile("Orchid", 2, 4, "\ud83c\udc23");
-    allTiles[36] = new Tile("Bamboo", 3, 4, "\ud83c\udc24");
-    allTiles[37] = new Tile("Chrysanthemum", 4, 4, "\ud83c\udc25");
-
-    allTiles[38] = new Tile("Spring", 1, 4, "\ud83c\udc26");
-    allTiles[39] = new Tile("Summer", 2, 4, "\ud83c\udc27");
-    allTiles[40] = new Tile("Autumn", 3, 4, "\ud83c\udc28");
-    allTiles[41] = new Tile("Winter", 4, 4, "\ud83c\udc29");
-    return allTiles;
-}
-function swap(id) {
+}*/
+/*function swap(id) {
     if (prev == "" || prev == false) {
         prev = id;
     } else {
@@ -439,4 +363,4 @@ function swap(id) {
         document.getElementById(id).innerHTML = prevText;
         prev = "";
     }
-}
+}*/
