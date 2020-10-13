@@ -1,3 +1,4 @@
+
 /* Style all font awesome icons */
 .fa {
     padding: 1vw;
@@ -11,7 +12,7 @@
     top: 50%;
     left: 50%;
     margin-top: -4vw;
-    margin-left: -4vw;
+    margin-left: -6vw;
   }
   
   /* Add a hover effect if you want */
@@ -22,7 +23,10 @@
     text-decoration: none;
   }
   /* Set a specific color for each brand */
-  
+  .fa-linkedin {
+    background: #007bb5;
+    color: white;
+  }
   /* Facebook */
   .fa-facebook {
     background: #3B5998;
@@ -77,7 +81,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', end
     top: 50%;
     left: 50%;
     margin-top: -4vw;
-    margin-left: -4vw;
+    margin-left: -6vw;
   }
   #gmail-div:hover {
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.70)!important;
