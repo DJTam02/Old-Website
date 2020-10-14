@@ -29,6 +29,13 @@
     top: 0px;
     left: 0px;
 }
+.box {
+    position: absolute;
+}
+.lineBox {
+    position: absolute;
+    z-index: -100;
+}
 #about {
     position: relative;
     left: 0px;
