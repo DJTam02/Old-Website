@@ -1,0 +1,33 @@
+.box {
+    position: absolute;
+}
+.lineBox {
+    position: absolute;
+    z-index: -100;
+    min-width: 10px;
+    min-height: 10px;
+}
+#graph {
+    height: 70%;
+    width: 80%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    background: green;
+}
+#border {
+    height: calc(70% + 40px);
+    width: calc(80% + 40px);
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    border-radius: 15px;
+    transition: 0.25s;
+}
+body {
+    background-attachment: fixed;
+    height: 100%;
+    transition: 0.25s;
+}

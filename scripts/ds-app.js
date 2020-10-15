@@ -3,6 +3,7 @@ var radius = 50;
 var circles = new Array();
 var colours = ["blue", "yellow", "green", "purple"];
 var connect = -1;
+var hovered = false;
 class LinkedList {
     edges;
     length;
@@ -15,8 +16,22 @@ class LinkedList {
         this.edges[this.edges.length] = temp;
         this.length++;
     }       
+    remove(index) {
+        for (let i = 0; i < this.edges.length; i++) {
+            if (this.edges[i][0] == index) {
+                this.edges.splice(i, 1);
+                break;
+            }
+        }
+    }
 }
-
+$("#graph").on("mouseenter", function(e) {
+    hovered = true;
+    console.log(hovered);
+}).on("mouseleave", function(e) {
+    hovered = false;
+    console.log(hovered);
+});
 $("#original").on('mousedown', function(e) {
     clicked = true;
     newNode();
@@ -30,11 +45,43 @@ function newNode() {
     circles[temp[0].index('.circ')] = temp;
     circles[temp[0].index('.circ')][0].attr("fill", colours[$(".circ:last").index('.circ')]);
     circles[temp[0].index('.circ')][0].mousemove(function(e) {
-        if (circles[$(this).index('.circ')][1]) {
-            for (let i = 0; i < circles[$(this).index('.circ')][2].length; i++) {
-                // Implement method of deciding which end of the line
-                $(".line").eq(circles[$(this).index('.circ')][2].edges[i][1]).parent().css("top", (e.pageY) + "px");
-                $(".line").eq(circles[$(this).index('.circ')][2].edges[i][1]).parent().css("left", (e.pageX) + "px");
+        var index = $(this).index('.circ');
+        if (circles[index][1]) {
+            showDelete();
+            var thisTop = parseFloat($(this).parent().css("top"));
+            var thisLeft = parseFloat($(this).parent().css("left"));
+            for (let i = 0; i < circles[index][2].length; i++) {
+                let connectedTop = parseFloat($(".circ").eq(circles[index][2].edges[i][0]).parent().css("top"));
+                let connectedLeft = parseFloat($(".circ").eq(circles[index][2].edges[i][0]).parent().css("left"));
+                if (thisTop < connectedTop && thisLeft < connectedLeft) {
+                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("top", (e.pageY) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("left", (e.pageX) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (connectedTop - thisTop) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("x2", (connectedLeft - thisLeft) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("x1", "0px");
+                } else if (thisTop < connectedTop && thisLeft >= connectedLeft) {
+                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("top", (e.pageY) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (connectedTop - thisTop) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("x1", (thisLeft - connectedLeft) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("x2", "0px");
+                } else if (thisTop >= connectedTop && thisLeft < connectedLeft) {
+                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("left", (e.pageX) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (thisTop - connectedTop) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("x1", (connectedLeft - thisLeft) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("x2", "0px");
+                } else {
+                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("top", (connectedTop + radius) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("left", (connectedLeft + radius) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (thisTop - connectedTop) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("x2", (thisLeft - connectedLeft) + "px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
+                    $(".line").eq(circles[index][2].edges[i][1]).attr("x1", "0px");
+                }
+                $(".line").eq(circles[index][2].edges[i][1]).parent().attr("height", Math.abs(connectedTop - thisTop) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).parent().attr("width", Math.abs(connectedLeft - thisLeft) + "px");
             }
             $(this).parent().css("top", (e.pageY - radius) + "px");
             $(this).parent().css("left", (e.pageX - radius) + "px");
@@ -54,23 +101,41 @@ function newNode() {
         }
     }).on('mouseup', function(e) {
         if (circles[$(this).index('.circ')][1]) {
-            circles[$(this).index('.circ')][1] = false;
-            $(this).parent().css("top", (e.pageY - radius) + "px");
-            $(this).parent().css("left", (e.pageX - radius) + "px");
+            console.log(hovered);
+            if (hovered) {
+                console.log("outside");
+                $(this).parent().remove();
+            } else {
+                $("body").css("background-color", "");
+                $("body").css("background-image", "");
+                $("#border").css("background-color", "white");
+                circles[$(this).index('.circ')][1] = false;
+                $(this).parent().css("top", (e.pageY - radius) + "px");
+                $(this).parent().css("left", (e.pageX - radius) + "px");
+            }
         }
     });
+
 }
 function drawLine(num) { 
-    var parentTop = parseFloat($(".circ").eq(num).parent().css("top"));
-    var parentLeft = parseFloat($(".circ").eq(num).parent().css("left"));
-    var parentTop2 = parseFloat($(".circ").eq(connect).parent().css("top"));
-    var parentLeft2 = parseFloat($(".circ").eq(connect).parent().css("left"));
-    var x = Math.min(parentLeft, parentLeft2) + radius; 
-    var y = Math.min(parentTop, parentTop2) + radius;
-    var w = Math.abs(parentLeft - parentLeft2);
-    var h = Math.abs(parentTop - parentTop2);
-    console.log(w);
-    $("body").append('<svg class="lineBox" height="' + h + '" width="' + w + '" style="top: ' + y +'px; left: ' + x +'px;"><line class="line" x1="0" y1="0" x2="' + w + '" y2="' + h + '" style="stroke:rgb(255,0,0);stroke-width:2" /></svg>');
+    var numTop = parseFloat($(".circ").eq(num).parent().css("top"));
+    var numLeft = parseFloat($(".circ").eq(num).parent().css("left"));
+    var connectTop = parseFloat($(".circ").eq(connect).parent().css("top"));
+    var connectLeft = parseFloat($(".circ").eq(connect).parent().css("left"));
+    var x = Math.min(numLeft, connectLeft) + radius; 
+    var y = Math.min(numTop, connectTop) + radius;
+    var w = Math.abs(numLeft - connectLeft);
+    var h = Math.abs(numTop - connectTop);
+    if ((numTop < connectTop && numLeft >= connectLeft) || (numTop >= connectTop && numLeft < connectLeft)) {
+        $("body").append('<svg class="lineBox" height="' + h + '" width="' + w + '" style="top: ' + y +'px; left: ' + x +'px;"><line class="line" x2="0" y1="0" x1="' + w + '" y2="' + h + '" style="stroke:rgb(255,0,0);stroke-width:2" /></svg>');
+    } else {
+        $("body").append('<svg class="lineBox" height="' + h + '" width="' + w + '" style="top: ' + y +'px; left: ' + x +'px;"><line class="line" x1="0" y1="0" x2="' + w + '" y2="' + h + '" style="stroke:rgb(255,0,0);stroke-width:2" /></svg>');
+    }
     circles[num][2].add(connect, $(".lineBox:last").index(".lineBox"));
     circles[connect][2].add(num, $(".lineBox:last").index(".lineBox"));  
+}
+function showDelete() {
+    $("#border").css("background-color", "red");
+    $("body").css("background-color", "red");
+    $("body").css("background-image", "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.7) 5px, rgba(255,255,255,.7   ) 60px)");
 }
