@@ -1,20 +1,16 @@
 var clicked = false;
 var radius = 50;
 var circles = new Array();
-var colours = ["blue", "yellow", "green", "purple"];
 var connect = -1;
 var hovered = false;
 class LinkedList {
     edges;
-    length;
     constructor() {
         this.edges = new Array(0);
-        this.length = 0;
     }
-    add(num, index) {
+    add(num, index) {   
         var temp = [num, index];
         this.edges[this.edges.length] = temp;
-        this.length++;
     }       
     remove(index) {
         for (let i = 0; i < this.edges.length; i++) {
@@ -24,14 +20,16 @@ class LinkedList {
             }
         }
     }
+    delete() {
+        let counter = 0;
+        for (let i = 0; i < this.edges.length; i) {
+            console.log(this.edges[i]);
+            $('.lineBox').eq(this.edges[i][1] - counter).remove();
+            this.edges.splice(i, 1);
+            counter++;
+        }
+    }
 }
-$("#graph").on("mouseenter", function(e) {
-    hovered = true;
-    console.log(hovered);
-}).on("mouseleave", function(e) {
-    hovered = false;
-    console.log(hovered);
-});
 $("#original").on('mousedown', function(e) {
     clicked = true;
     newNode();
@@ -43,14 +41,20 @@ function newNode() {
     temp[1] = true; // Is clicked
     temp[2] = new LinkedList();
     circles[temp[0].index('.circ')] = temp;
-    circles[temp[0].index('.circ')][0].attr("fill", colours[$(".circ:last").index('.circ')]);
+    if (temp[0].index('.circ') * 50 < 250) {
+        circles[temp[0].index('.circ')][0].attr("fill", "rgb(" + (temp[0].index('.circ') * 50) + ", 0, 0)");
+    } else if (temp[0].index('.circ') * 50 < 500) {
+        circles[temp[0].index('.circ')][0].attr("fill", "rgb(0, " + ((temp[0].index('.circ') * 50) - 150) + ", 0)");
+    } else {
+        circles[temp[0].index('.circ')][0].attr("fill", "rgb(0, 0, " + ((temp[0].index('.circ') * 50) - 400) + ")");
+    }
     circles[temp[0].index('.circ')][0].mousemove(function(e) {
         var index = $(this).index('.circ');
         if (circles[index][1]) {
             showDelete();
             var thisTop = parseFloat($(this).parent().css("top"));
             var thisLeft = parseFloat($(this).parent().css("left"));
-            for (let i = 0; i < circles[index][2].length; i++) {
+            for (let i = 0; i < circles[index][2].edges.length; i++) {
                 let connectedTop = parseFloat($(".circ").eq(circles[index][2].edges[i][0]).parent().css("top"));
                 let connectedLeft = parseFloat($(".circ").eq(circles[index][2].edges[i][0]).parent().css("left"));
                 if (thisTop < connectedTop && thisLeft < connectedLeft) {
@@ -89,9 +93,17 @@ function newNode() {
     });
     circles[temp[0].index('.circ')][0].on('mousedown', function(e) {
         if (e.button == 0) {
+            console.log("circle number " + temp[0].index('.circ') + ":");
+            console.log(circles[temp[0].index('.circ')]);
+            console.log("edges: ");
+            for (let i = 0; i < circles[temp[0].index('.circ')][2].edges.length; i++) {
+                console.log(circles[temp[0].index('.circ')][2].edges[i]);
+            }
             circles[$(this).index('.circ')][1] = true;
         } else if (e.button == 1) {
-            if (connect >= 0) {
+            if (connect == $(this).index('.circ')) {
+                connect = -1;
+            } else if (connect >= 0) {
                 drawLine($(this).index('.circ'));
                 connect = -1;
             } else {
@@ -101,15 +113,22 @@ function newNode() {
         }
     }).on('mouseup', function(e) {
         if (circles[$(this).index('.circ')][1]) {
-            console.log(hovered);
-            if (hovered) {
-                console.log("outside");
+            $("body").css("background-color", "");
+            $("body").css("background-image", "");
+            $("#border").css("background-color", "white");
+            var topOffset = parseFloat($("#graph").offset().top);
+            var leftOffset = parseFloat($("#graph").offset().left);
+            var graphWidth = parseFloat($("#graph").css("width"));
+            var graphHeight = parseFloat($("#graph").css("height"));
+            circles[$(this).index('.circ')][1] = false;
+            if (e.pageX < leftOffset || e.pageX > (graphWidth + leftOffset) || e.pageY < topOffset || e.pageY > (topOffset + graphHeight)) {
+                circles[$(this).index('.circ')][2].delete();
+                for (let i = 0; i < circles.length; i++) {
+                    circles[i][2].remove($(this).index('.circ'));
+                }
+                circles.splice($(this).index('.circ'), 1);
                 $(this).parent().remove();
             } else {
-                $("body").css("background-color", "");
-                $("body").css("background-image", "");
-                $("#border").css("background-color", "white");
-                circles[$(this).index('.circ')][1] = false;
                 $(this).parent().css("top", (e.pageY - radius) + "px");
                 $(this).parent().css("left", (e.pageX - radius) + "px");
             }
@@ -138,4 +157,15 @@ function showDelete() {
     $("#border").css("background-color", "red");
     $("body").css("background-color", "red");
     $("body").css("background-image", "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.7) 5px, rgba(255,255,255,.7   ) 60px)");
+}
+function circleInfo() {
+    console.log("CIRCLE INFO");
+    for (let i = 0; i < circles.length; i++) {
+        console.log("Circle #: " + i);
+        console.log(circles[i]);
+        console.log("Edges:");
+        for (let j = 0; j < circles[i][2].edges.length; j++) {
+            console.log(circles[i][2].edges[j]);
+        }
+    }
 }
