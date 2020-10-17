@@ -3,13 +3,14 @@ var radius = 50;
 var circles = new Array();
 var connect = -1;
 var hovered = false;
+var infoPage = 0;
 class LinkedList {
     edges;
     constructor() {
         this.edges = new Array(0);
     }
     add(num, index) {   
-        var temp = [num, index];
+        var temp = [num, index, 1];
         this.edges[this.edges.length] = temp;
     }       
     remove(index) {
@@ -29,13 +30,29 @@ class LinkedList {
             counter++;
         }
     }
+    connects(num) {
+        for (let i = 0; i < this.edges.length; i++) {
+            if (this.edges[i][0] == num) {
+                return true;
+            }
+        }
+        return false;
+    }
+    getIndex(num) {
+        for (let i = 0; i < this.edges.length; i++) {
+            if (this.edges[i][0] == num) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
 $("#original").on('mousedown', function(e) {
     clicked = true;
     newNode();
 });
 function newNode() {
-    $("body").append('<svg class="box" height="100" width="100" style="top: 0; left: 0;"><circle class="circ" cx="' + radius + '" cy="' + radius + '" r="' + radius + '" fill="red" /></svg>');
+    $("body").append('<svg class="box" height="100" width="100" style="top: 35px; left: 40px;"><circle class="circ" cx="' + radius + '" cy="' + radius + '" r="' + radius + '" fill="red" /></svg>');
     var temp = new Array(3);
     temp[0] = $(".circ:last");
     temp[1] = true; // Is clicked
@@ -101,11 +118,15 @@ function newNode() {
             }
             circles[$(this).index('.circ')][1] = true;
         } else if (e.button == 1) {
+            console.log(connect);
             if (connect == $(this).index('.circ')) {
                 connect = -1;
+            } else if (circles[$(this).index('.circ')][2].connects(connect)) {
+                $('.lineBox').eq(circles[$(this).index('.circ')][2].edges[circles[$(this).index('.circ')][2].getIndex(connect)][1]).remove();
+                circles[$(this).index('.circ')][2].remove(connect);
+                circles[connect][2].remove($(this).index('.circ'));
             } else if (connect >= 0) {
                 drawLine($(this).index('.circ'));
-                connect = -1;
             } else {
                 connect = $(this).index('.circ');
                 //Change node colour
@@ -113,6 +134,8 @@ function newNode() {
         }
     }).on('mouseup', function(e) {
         if (circles[$(this).index('.circ')][1]) {
+            $("#header").css("display", "block");
+            $("#buttons").css("display", "inline-block");
             $("body").css("background-color", "");
             $("body").css("background-image", "");
             $("#border").css("background-color", "white");
@@ -145,6 +168,7 @@ function drawLine(num) {
     var y = Math.min(numTop, connectTop) + radius;
     var w = Math.abs(numLeft - connectLeft);
     var h = Math.abs(numTop - connectTop);
+    var tempConnect = connect;
     if ((numTop < connectTop && numLeft >= connectLeft) || (numTop >= connectTop && numLeft < connectLeft)) {
         $("body").append('<svg class="lineBox" height="' + h + '" width="' + w + '" style="top: ' + y +'px; left: ' + x +'px;"><line class="line" x2="0" y1="0" x1="' + w + '" y2="' + h + '" style="stroke:rgb(255,0,0);stroke-width:2" /></svg>');
     } else {
@@ -152,8 +176,12 @@ function drawLine(num) {
     }
     circles[num][2].add(connect, $(".lineBox:last").index(".lineBox"));
     circles[connect][2].add(num, $(".lineBox:last").index(".lineBox"));  
+    $(".lineBox:last").focus(addInputBox);
+    connect = -1;
 }
 function showDelete() {
+    $("#header").css("display", "none");
+    $("#buttons").css("display", "none");
     $("#border").css("background-color", "red");
     $("body").css("background-color", "red");
     $("body").css("background-image", "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.7) 5px, rgba(255,255,255,.7   ) 60px)");
@@ -167,5 +195,94 @@ function circleInfo() {
         for (let j = 0; j < circles[i][2].edges.length; j++) {
             console.log(circles[i][2].edges[j]);
         }
+    }
+}
+function showInfo() {
+    $("#info-modal").css("display", "block");
+}
+function changeInfo(dir) {
+    var next = 1;
+    if (dir == "back") {
+        next = -1;
+    }
+    $("#t" + infoPage).css("display", "none");
+    infoPage += next;
+    $("#t" + infoPage).css("display", "block");
+    if (infoPage == 0 && next == -1) {
+        $(".next").eq(0).css("display", "block");
+        $(".next").eq(1).css("display", "none");
+    } else if (infoPage == 7 && next == 1) {
+        $(".next").eq(2).css("display", "block");
+        $(".next").eq(1).css("display", "none");
+    } else {
+        $(".next").eq(2).css("display", "none");
+        $(".next").eq(1).css("display", "block");
+        $(".next").eq(0).css("display", "none");
+    }
+    $("#page").html((infoPage + 1) + "/8");
+}
+function closeInfo() {
+    $("#info-modal").css("display", "none");
+    infoPage = 0;
+    $("#t0").css("display", "block");
+    for (let i = 1; i < 8; i++) {
+        $("#t" + i).css("display", "none");
+    }
+    $(".next").eq(2).css("display", "none");
+    $(".next").eq(1).css("display", "none");
+    $(".next").eq(0).css("display", "block");
+}
+function addWeight(num, num2) {
+    var weight;
+    if ($("#tempInput").val() == "") {
+        weight = 1;
+    } else {
+        weight = parseFloat($("#tempInput").val());
+    }
+    var lineIndex;
+    for (let i = 0; i < circles[num][2].edges.length; i++) {
+        if (circles[num][2].edges[i][0] == num2) {
+            circles[num][2].edges[i][2] = weight;
+            lineIndex = circles[num][2].edges[i][1];
+        }
+    }
+    for (let i = 0; i < circles[num2][2].edges.length; i++) {
+        if (circles[num2][2].edges[i][0] == num) {
+            circles[num2][2].edges[i][2] = weight;
+        }
+    }
+    $("#tempInput").remove();
+    $(".lineBox").eq(lineIndex).blur();
+    $(".lineBox").eq(lineIndex).focus(addInputBox);
+}
+function addInputBox () {
+    var nodes = new Array(0);
+    var index = $(this).index(".lineBox");
+    var prevValue;
+    for (let i = 0; i < circles.length; i++) {
+        for (let j = 0; j < circles[i][2].edges.length; j++) {
+            if (circles[i][2].edges[j][1] == index) {
+                nodes[nodes.length] = circles[i][2].edges[j][0];
+                prevValue = circles[i][2].edges[j][2];
+            }
+        }
+    }
+    var xOffset = parseFloat($(this).offset().left);
+    var yOffset = parseFloat($(this).offset().top);
+    var high = parseFloat($(this).attr("height"));
+    var wid = parseFloat($(this).attr("width"));
+    $("body").append('<input min="0" type="number" onkeydown="numVerify(event)" onfocusout="addWeight(' + nodes[0] + ', ' + nodes[1] + ')" id="tempInput" style="position: absolute; left: ' + (xOffset + (wid / 2)) + 'px; top: ' + (yOffset + (high / 2)) + 'px; transform: translate(-50%, -50%); border: solid black 2px; z-index: 1; style: width: 50px;" value="' + prevValue + '">');
+    $("#tempInput").focus();
+    $(this).off("focus");
+}
+function numVerify (e) {
+    var keynum;
+    if (window.event) { // IE                    
+      keynum = e.keyCode;
+    } else if(e.which){ // Netscape/Firefox/Opera                   
+      keynum = e.which;
+    }
+    if (keynum != 8 && keynum != 0 && keynum < 48 || keynum > 57) {
+        e.preventDefault();
     }
 }
