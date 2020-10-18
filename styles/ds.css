@@ -44,6 +44,7 @@ body {
     display: inline-block;
     width: calc(100% - 460px);
     vertical-align: top;
+    margin: auto;
 }
 #start-title {
     display: inline-block; 
@@ -109,4 +110,19 @@ h1, h3, h4, h5, h6, p {
     width: 100%;
     left: 0px;
     text-align: center;
+ }
+ #topLeft {
+    width: 214px; 
+    display: inline-block; 
+    margin-top: 10px; 
+    margin-left: 10px;
+ }
+ #topRight {
+    width: 224px; 
+    vertical-align: top; 
+    display: inline-block; 
+    margin-top: 30px;
+ }
+ #header {
+     text-align: center;
  }

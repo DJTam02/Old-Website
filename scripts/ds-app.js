@@ -4,6 +4,8 @@ var circles = new Array();
 var connect = -1;
 var hovered = false;
 var infoPage = 0;
+var algo = "";
+var visitedColor = "blue";
 class LinkedList {
     edges;
     constructor() {
@@ -58,105 +60,17 @@ function newNode() {
     temp[1] = true; // Is clicked
     temp[2] = new LinkedList();
     circles[temp[0].index('.circ')] = temp;
+    /*
     if (temp[0].index('.circ') * 50 < 250) {
         circles[temp[0].index('.circ')][0].attr("fill", "rgb(" + (temp[0].index('.circ') * 50) + ", 0, 0)");
     } else if (temp[0].index('.circ') * 50 < 500) {
         circles[temp[0].index('.circ')][0].attr("fill", "rgb(0, " + ((temp[0].index('.circ') * 50) - 150) + ", 0)");
     } else {
         circles[temp[0].index('.circ')][0].attr("fill", "rgb(0, 0, " + ((temp[0].index('.circ') * 50) - 400) + ")");
-    }
-    circles[temp[0].index('.circ')][0].mousemove(function(e) {
-        var index = $(this).index('.circ');
-        if (circles[index][1]) {
-            showDelete();
-            var thisTop = parseFloat($(this).parent().css("top"));
-            var thisLeft = parseFloat($(this).parent().css("left"));
-            for (let i = 0; i < circles[index][2].edges.length; i++) {
-                let connectedTop = parseFloat($(".circ").eq(circles[index][2].edges[i][0]).parent().css("top"));
-                let connectedLeft = parseFloat($(".circ").eq(circles[index][2].edges[i][0]).parent().css("left"));
-                if (thisTop < connectedTop && thisLeft < connectedLeft) {
-                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("top", (e.pageY) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("left", (e.pageX) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (connectedTop - thisTop) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("x2", (connectedLeft - thisLeft) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("x1", "0px");
-                } else if (thisTop < connectedTop && thisLeft >= connectedLeft) {
-                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("top", (e.pageY) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (connectedTop - thisTop) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("x1", (thisLeft - connectedLeft) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("x2", "0px");
-                } else if (thisTop >= connectedTop && thisLeft < connectedLeft) {
-                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("left", (e.pageX) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (thisTop - connectedTop) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("x1", (connectedLeft - thisLeft) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("x2", "0px");
-                } else {
-                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("top", (connectedTop + radius) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).parent().css("left", (connectedLeft + radius) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (thisTop - connectedTop) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("x2", (thisLeft - connectedLeft) + "px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
-                    $(".line").eq(circles[index][2].edges[i][1]).attr("x1", "0px");
-                }
-                $(".line").eq(circles[index][2].edges[i][1]).parent().attr("height", Math.abs(connectedTop - thisTop) + "px");
-                $(".line").eq(circles[index][2].edges[i][1]).parent().attr("width", Math.abs(connectedLeft - thisLeft) + "px");
-            }
-            $(this).parent().css("top", (e.pageY - radius) + "px");
-            $(this).parent().css("left", (e.pageX - radius) + "px");
-        }
-    });
-    circles[temp[0].index('.circ')][0].on('mousedown', function(e) {
-        if (e.button == 0) {
-            console.log("circle number " + temp[0].index('.circ') + ":");
-            console.log(circles[temp[0].index('.circ')]);
-            console.log("edges: ");
-            for (let i = 0; i < circles[temp[0].index('.circ')][2].edges.length; i++) {
-                console.log(circles[temp[0].index('.circ')][2].edges[i]);
-            }
-            circles[$(this).index('.circ')][1] = true;
-        } else if (e.button == 1) {
-            console.log(connect);
-            if (connect == $(this).index('.circ')) {
-                connect = -1;
-            } else if (circles[$(this).index('.circ')][2].connects(connect)) {
-                $('.lineBox').eq(circles[$(this).index('.circ')][2].edges[circles[$(this).index('.circ')][2].getIndex(connect)][1]).remove();
-                circles[$(this).index('.circ')][2].remove(connect);
-                circles[connect][2].remove($(this).index('.circ'));
-            } else if (connect >= 0) {
-                drawLine($(this).index('.circ'));
-            } else {
-                connect = $(this).index('.circ');
-                //Change node colour
-            }
-        }
-    }).on('mouseup', function(e) {
-        if (circles[$(this).index('.circ')][1]) {
-            $("#header").css("display", "block");
-            $("#buttons").css("display", "inline-block");
-            $("body").css("background-color", "");
-            $("body").css("background-image", "");
-            $("#border").css("background-color", "white");
-            var topOffset = parseFloat($("#graph").offset().top);
-            var leftOffset = parseFloat($("#graph").offset().left);
-            var graphWidth = parseFloat($("#graph").css("width"));
-            var graphHeight = parseFloat($("#graph").css("height"));
-            circles[$(this).index('.circ')][1] = false;
-            if (e.pageX < leftOffset || e.pageX > (graphWidth + leftOffset) || e.pageY < topOffset || e.pageY > (topOffset + graphHeight)) {
-                circles[$(this).index('.circ')][2].delete();
-                for (let i = 0; i < circles.length; i++) {
-                    circles[i][2].remove($(this).index('.circ'));
-                }
-                circles.splice($(this).index('.circ'), 1);
-                $(this).parent().remove();
-            } else {
-                $(this).parent().css("top", (e.pageY - radius) + "px");
-                $(this).parent().css("left", (e.pageX - radius) + "px");
-            }
-        }
-    });
+    }*/
+    circles[temp[0].index('.circ')][0].mousemove(moveNode);
+    circles[temp[0].index('.circ')][0].on('mousedown', clickNode);
+    circles[temp[0].index('.circ')][0].on('mouseup', unclickNode);
 
 }
 function drawLine(num) { 
@@ -285,4 +199,155 @@ function numVerify (e) {
     if (keynum != 8 && keynum != 0 && keynum < 48 || keynum > 57) {
         e.preventDefault();
     }
+}
+function moveNode(e) {
+    var index = $(this).index('.circ');
+    if (circles[index][1]) {
+        showDelete();
+        var thisTop = parseFloat($(this).parent().css("top"));
+        var thisLeft = parseFloat($(this).parent().css("left"));
+        for (let i = 0; i < circles[index][2].edges.length; i++) {
+            let connectedTop = parseFloat($(".circ").eq(circles[index][2].edges[i][0]).parent().css("top"));
+            let connectedLeft = parseFloat($(".circ").eq(circles[index][2].edges[i][0]).parent().css("left"));
+            if (thisTop < connectedTop && thisLeft < connectedLeft) {
+                $(".line").eq(circles[index][2].edges[i][1]).parent().css("top", (e.pageY) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).parent().css("left", (e.pageX) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (connectedTop - thisTop) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("x2", (connectedLeft - thisLeft) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("x1", "0px");
+            } else if (thisTop < connectedTop && thisLeft >= connectedLeft) {
+                $(".line").eq(circles[index][2].edges[i][1]).parent().css("top", (e.pageY) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (connectedTop - thisTop) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("x1", (thisLeft - connectedLeft) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("x2", "0px");
+            } else if (thisTop >= connectedTop && thisLeft < connectedLeft) {
+                $(".line").eq(circles[index][2].edges[i][1]).parent().css("left", (e.pageX) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (thisTop - connectedTop) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("x1", (connectedLeft - thisLeft) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("x2", "0px");
+            } else {
+                $(".line").eq(circles[index][2].edges[i][1]).parent().css("top", (connectedTop + radius) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).parent().css("left", (connectedLeft + radius) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("y2", (thisTop - connectedTop) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("x2", (thisLeft - connectedLeft) + "px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("y1", "0px");
+                $(".line").eq(circles[index][2].edges[i][1]).attr("x1", "0px");
+            }
+            $(".line").eq(circles[index][2].edges[i][1]).parent().attr("height", Math.abs(connectedTop - thisTop) + "px");
+            $(".line").eq(circles[index][2].edges[i][1]).parent().attr("width", Math.abs(connectedLeft - thisLeft) + "px");
+        }
+        $(this).parent().css("top", (e.pageY - radius) + "px");
+        $(this).parent().css("left", (e.pageX - radius) + "px");
+    }
+}
+function clickNode(e) {
+    if (e.button == 0) {
+        console.log("circle number " + $(this).index('.circ') + ":");
+        console.log(circles[$(this).index('.circ')]);
+        console.log("edges: ");
+        for (let i = 0; i < circles[$(this).index('.circ')][2].edges.length; i++) {
+            console.log(circles[$(this).index('.circ')][2].edges[i]);
+        }
+        circles[$(this).index('.circ')][1] = true;
+    } else if (e.button == 1) {
+        console.log(connect);
+        if (connect == $(this).index('.circ')) {
+            connect = -1;
+        } else if (circles[$(this).index('.circ')][2].connects(connect)) {
+            $('.lineBox').eq(circles[$(this).index('.circ')][2].edges[circles[$(this).index('.circ')][2].getIndex(connect)][1]).remove();
+            circles[$(this).index('.circ')][2].remove(connect);
+            circles[connect][2].remove($(this).index('.circ'));
+        } else if (connect >= 0) {
+            drawLine($(this).index('.circ'));
+        } else {
+            connect = $(this).index('.circ');
+            //Change node colour
+        }
+    }
+}
+function unclickNode(e) {
+    if (circles[$(this).index('.circ')][1]) {
+        $("#header").css("display", "block");
+        $("#buttons").css("display", "inline-block");
+        $("body").css("background-color", "");
+        $("body").css("background-image", "");
+        $("#border").css("background-color", "white");
+        var topOffset = parseFloat($("#graph").offset().top);
+        var leftOffset = parseFloat($("#graph").offset().left);
+        var graphWidth = parseFloat($("#graph").css("width"));
+        var graphHeight = parseFloat($("#graph").css("height"));
+        circles[$(this).index('.circ')][1] = false;
+        if (e.pageX < leftOffset || e.pageX > (graphWidth + leftOffset) || e.pageY < topOffset || e.pageY > (topOffset + graphHeight)) {
+            circles[$(this).index('.circ')][2].delete();
+            for (let i = 0; i < circles.length; i++) {
+                circles[i][2].remove($(this).index('.circ'));
+            }
+            circles.splice($(this).index('.circ'), 1);
+            $(this).parent().remove();
+        } else {
+            $(this).parent().css("top", (e.pageY - radius) + "px");
+            $(this).parent().css("left", (e.pageX - radius) + "px");
+        }
+    }
+}
+function startDFS() {
+    for (let i = 0; i < circles.length; i++) {
+        circles[i][0].off();
+        circles[i][0].on("click", selectStartingNode);
+        for (let j = 0; j < circles[i][2].edges.length; j++) {
+            $('.lineBox').eq(circles[i][2].edges[j][1]).off();
+        }
+    }
+    algo = "DFS";
+    $("#topLeft").css("display", "none");
+    $("#topRight").css("display", "none");
+    $("#buttons").css("display", "none");
+    $("#title").html("You have selected DFS! Please click on a starting node.");
+}
+function selectStartingNode() {
+    $("#topLeft").css("display", "inline-block");
+    $("#topRight").css("display", "inline-block");
+    $("#header").css("display", "none");
+    $("#title").html("Graphing Algorithms Visualizer!");
+    if (algo == "DFS") {
+        DFS($(this).index(".circ"), [0]);
+        printTest();
+    } else if (algo == "BFS") {
+        BFS([$(this).index('.circ')], new Array(0));
+    } else if (algo == "Dijk") {
+        DSP($(this).index(".circ"));
+    }
+    for (let i = 0; i < circles.length; i++) {
+        circles[i][0].off();
+    }
+}
+async function DFS(selected, visited) {
+    var allVisited = true;
+    //Print selected node
+    console.log("selected: " + selected);
+    $(".circ").eq(selected).attr("fill", visitedColor);
+    //Loop through unvisited nodes
+    for (let i = 0; i < circles[selected][2].edges.length; i++) {
+        console.log(selected + ": " + circles[selected][2].edges[i][0] + " visited? " + visited.includes(circles[selected][2].edges[i][0]));
+        if (!visited.includes(circles[selected][2].edges[i][0])) {
+            allVisited = false;
+            visited.push(circles[selected][2].edges[i][0]);
+            console.log(visited);
+            await sleep(1000);
+            DFS(circles[selected][2].edges[i][0], visited);
+        }
+    }
+    if (allVisited) {
+        console.log("here");
+        await sleep(1000);
+    }
+}
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+function printTest() {
+    console.log("done");
 }
