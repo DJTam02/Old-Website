@@ -1,5 +1,7 @@
 # OmegaCherzerd.github.io
 
+![App Photo](../images/myMJ.png?raw=true "Title")
+
 -------------------------
 |     Objectives        |
 -------------------------
