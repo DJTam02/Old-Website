@@ -18,19 +18,109 @@ let text = "";
 
 let connectionNum = 0;
 
-let playerInfo = [
-    ["","",0],
-    ["","",0],
-    ["","",0],
-    ["","",0]
+let players = [false, false, false, false];
+let botsHands = [
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array()
 ];
-let roundNum = 0;
-let counter = 0; 
+let roundNum = -1;
 let primaryPlayer = 0;
-//let tileCounter = 0;
+let tileCounter = 0;
+let flowerCounter = 0;
 
 let allTilesArray;
+function startRound() {
+    roundNum++;
+    let botRolling = false;
+    if (players[(roundNum + 4) % 4].isCPU) {
+        text = players[(roundNum + 4) % 4].name + " has to roll the dice. Waiting for " + players[primaryPlayer].name + " to press next to proceed...";
+        botRolling = true;
+    } else {
+        text = "Waiting for " + players[(roundNum + 4) % 4].name + " to roll the dice.";
+    }
+    io.emit('update-text', text);
+    io.emit('update-round-wind', ((roundNum + 4) % 4));
+    io.emit('roll-dice', ((roundNum + 4) % 4), botRolling);
+}
+function giveBotTiles(botNum, num) {
+    let start = botsHands[botNum].length;
+    for (let i = start; i < start + num; i++) {
+        botsHands[botNum][i] = getTile();
+    } 
+    players[botNum].handIndex += num; 
+}
+function nextFlower(playerNum) {
+    if (flowerCounter < 4) {
+        flowerCounter++;
+        if (players[playerNum].isCPU) {
+            io.emit("check-bot-flower", botsHands[playerNum], playerNum, 2);
+        } else {
+            text = players[playerNum].name + " has replaced their flowers. Waiting for " + players[(playerNum + 1) % 4].name + " to replace their flowers...";
+            io.emit("update-text", text);
+            io.emit("flower", playerNum);
+        }
+    } else {
+        firstTurn(((roundNum + 4) % 4));
+    }
+}
+function firstTurn(playerNum) {
+    if (players[playerNum].isCPU) {
+        text = players[(playerNum + 3) % 4].name + " has no flowers. " + players[playerNum].name + " needs to play a tile. Waiting for " + players[primaryPlayer].name + " to press next to proceed...";
+        io.emit("bot-first-turn", playerNum);
+    } else {
+        text = "Waiting for " + players[playerNum].name + " to play their turn...";
+        io.emit("first-turn", playerNum);
+    }
+    io.emit('update-text', text);
+}
 
+function botTurn(playerNum) {
+    //For now just emit random
+    let ran = Math.floor(Math.random() * botsHands[playerNum].length);
+    /*if (bots[evt.currentTarget.playerNum].name == "Jacob") {
+        for (let i = 0; i < bots[evt.currentTarget.playerNum].hand.length; i++) {
+            console.log("i is: " + i + ": " + bots[evt.currentTarget.playerNum].hand[i].unicode);
+        }
+    }*/
+    let temp = botsHands[playerNum][ran].unicode;
+    let tempValue = botsHands[playerNum][ran].value;
+    let tempSuit = botsHands[playerNum][ran].suit;
+    botsHands[playerNum].splice(ran, 1);
+    players[playerNum].handIndex--;
+    console.log("handIndex is: " + players[playerNum].handIndex);
+    io.emit("place-tile", temp, tempValue, tempSuit, playerNum, players[playerNum].handIndex);
+    turn((playerNum + 1) % 4);
+}
+function spliceBotHand(flower, botNum) {
+    let output = new Array(flower.length);
+    for (let i = 0; i < flower.length; i++) {
+        output[i] = botsHands[botNum][flower[i]];
+    }
+    for (let i = 0; i < flower.length; i++) {
+        botsHands[botNum].splice(flower[i] - i, 1);
+    }
+    players[botNum].handIndex = botsHands[botNum].length;
+    return output;
+}
+function turn(playerNum) {
+    if (players[playerNum].isCPU) {
+        text = players[(playerNum + 3) % 4].name + " has played their tile. " + players[playerNum].name + " needs to draw a tile. Waiting for " + players[primaryPlayer].name + " to press next to proceed...";
+        io.emit("bot-turn", playerNum);
+    } else {
+        text = "Waiting for " + players[playerNum].name + " to play their turn...";
+        io.emit("turn", playerNum);
+    }
+    io.emit('update-text', text);
+}
+function gameEvent(tiles, playerNum) {
+    let lastFin = players[playerNum].finIndex;
+    players[playerNum].finIndex += (tiles.length + 1);
+    let lastHand = players[playerNum].handIndex;
+    players[playerNum].handIndex -= tiles.length;
+    io.emit("game-event", tiles, playerNum, lastFin, lastHand);
+}
 class Tile {
     constructor (newSuit, newValue, newRemaining, newUnicode) {
         this.suit = newSuit;
@@ -42,14 +132,25 @@ class Tile {
         this.remaining--;
     }
 }
+class Player {
+    constructor (name, isCPU, level, finIndex, flowerIndex, handIndex) {
+        this.name = name;
+        this.isCPU = isCPU;
+        this.level = level;
+        this.finIndex = finIndex;
+        this.flowerIndex = flowerIndex;
+        this.handIndex = handIndex;
+    }
+}
+
 function findAllTiles() {
     let allTiles = new Array(42);
-    allTiles[0] = new Tile("East", 0, 4, "\ud83c\udc00");
-    allTiles[1] = new Tile("South", 0, 4, "\ud83c\udc01");
-    allTiles[2] = new Tile("West", 0, 4, "\ud83c\udc02");
-    allTiles[3] = new Tile("North", 0, 4, "\ud83c\udc03");
-    allTiles[4] = new Tile("Red", 0, 4, "\ud83c\udc04");
-    allTiles[5] = new Tile("Green", 0, 4, "\ud83c\udc05");
+    allTiles[0] = new Tile("East", 1, 4, "\ud83c\udc00");
+    allTiles[1] = new Tile("South", 5, 4, "\ud83c\udc01");
+    allTiles[2] = new Tile("West", 6, 4, "\ud83c\udc02");
+    allTiles[3] = new Tile("North", 3, 4, "\ud83c\udc03");
+    allTiles[4] = new Tile("Red", 4, 4, "\ud83c\udc04");
+    allTiles[5] = new Tile("Green", 2, 4, "\ud83c\udc05");
     allTiles[6] = new Tile("Blue", 0, 4, "\ud83c\udc06");
 
     allTiles[7] = new Tile("Number", 1, 4, "\ud83c\udc07");
@@ -82,22 +183,22 @@ function findAllTiles() {
     allTiles[32] = new Tile("Circles", 8, 4, "\ud83c\udc20");
     allTiles[33] = new Tile("Circles", 9, 4, "\ud83c\udc21");
 
-    allTiles[34] = new Tile("Plum", 1, 4, "\ud83c\udc22");
-    allTiles[35] = new Tile("Orchid", 2, 4, "\ud83c\udc23");
-    allTiles[36] = new Tile("Bamboo", 3, 4, "\ud83c\udc24");
-    allTiles[37] = new Tile("Chrysanthemum", 4, 4, "\ud83c\udc25");
+    allTiles[34] = new Tile("Plum", 1, 1, "\ud83c\udc22");
+    allTiles[35] = new Tile("Orchid", 2, 1, "\ud83c\udc23");
+    allTiles[36] = new Tile("Bamboo", 3, 1, "\ud83c\udc24");
+    allTiles[37] = new Tile("Chrysanthemum", 4, 1, "\ud83c\udc25");
 
-    allTiles[38] = new Tile("Spring", 1, 4, "\ud83c\udc26");
-    allTiles[39] = new Tile("Summer", 2, 4, "\ud83c\udc27");
-    allTiles[40] = new Tile("Autumn", 3, 4, "\ud83c\udc28");
-    allTiles[41] = new Tile("Winter", 4, 4, "\ud83c\udc29");
+    allTiles[38] = new Tile("Spring", 1, 1, "\ud83c\udc26");
+    allTiles[39] = new Tile("Summer", 2, 1, "\ud83c\udc27");
+    allTiles[40] = new Tile("Autumn", 3, 1, "\ud83c\udc28");
+    allTiles[41] = new Tile("Winter", 4, 1, "\ud83c\udc29");
     return allTiles;
 }
 
 function getTile() {
     let tile;
     for (let i = 0; i < 1; i++) {
-        let ran = Math.floor(Math.random() * (42));
+        let ran = Math.floor(Math.random() * (allTilesArray.length));
         if (allTilesArray[ran].remaining > 0) {
             tile = allTilesArray[ran];
             allTilesArray[ran].reduce();
@@ -110,7 +211,6 @@ function getTile() {
 
 io.on('connection', (sock) => {
     connectionNum++;
-    console.log("connection secured");  
     sock.emit('connection', connectionNum);   
     sock.on('updatePlayerNum', (connectNum) => {
         io.emit('updatePlayerNum', connectNum);
@@ -121,67 +221,31 @@ io.on('connection', (sock) => {
       });
     sock.on('confirm', (info) => {
         let playerNum = parseInt(info[0].charAt(1)) - 1;
-        playerInfo[playerNum][0] = info[1]; 
-        playerInfo[playerNum][1] = info[2];
-        playerInfo[playerNum][2] = info[3];
+        players[playerNum] = new Player(info[1], info[2], info[3], 0, 0, 0);
         io.emit('confirm', info);
     });
     sock.on('cancel', (player) => {
         let playerNum = parseInt(player.charAt(1)) - 1;
-        playerInfo[playerNum][0] = "";
-        playerInfo[playerNum][1] = "";
-        playerInfo[playerNum][2] = 0;
+        players[playerNum] = false;
         io.emit('cancel', player);
     });
-    sock.on('getp1Name', () => {
-        if (playerInfo[0][1] == true) {
-            sock.emit('getp1Name', playerInfo[0][0] + " (CPU Level " + playerInfo[0][2] + ")");
-        } else {
-            sock.emit('getp1Name', playerInfo[0][0]);
-        }
-    });
-    sock.on('getp2Name', () => {
-        if (playerInfo[1][1] == true) {
-            sock.emit('getp2Name', playerInfo[1][0] + " (CPU Level " + playerInfo[1][2] + ")");
-        } else {
-            sock.emit('getp2Name', playerInfo[1][0]);
-        }
-    });
-    sock.on('getp3Name', () => {
-        if (playerInfo[2][1] == true) {
-            sock.emit('getp3Name', playerInfo[2][0] + " (CPU Level " + playerInfo[2][2] + ")");
-        } else {
-            sock.emit('getp3Name', playerInfo[2][0]);
-        }
-    });
-    sock.on('getp4Name', () => {
-        if (playerInfo[3][1] == true) {
-            sock.emit('getp4Name', playerInfo[3][0] + " (CPU Level " + playerInfo[3][2] + ")");
-        } else {
-            sock.emit('getp4Name', playerInfo[3][0]);
-        }
-    });
     sock.on('checkPlayers', () => {
-        if (playerInfo[0][0] != "" && playerInfo[1][0] != "" && playerInfo[2][0] != "" && playerInfo[3][0] != "") {
-            if (playerInfo[0][1] && playerInfo[1][1] && playerInfo[2][1] && playerInfo[3][1]) {
+        if (players[0] != false && players[1] != false && players[2] != false && players[3] != false) {
+            if (players[0].isCPU && players[1].isCPU && players[2].isCPU && players[3].isCPU) {
                 sock.emit("allCPU");
             } else {
-                if (!playerInfo[0][1]) {
+                if (!players[0].isCPU) {
                     primaryPlayer = 0;
-                    io.emit("primary-player", 1);
-                } else if (!playerInfo[1][1]) {
+                } else if (!players[1].isCPU) {
                     primaryPlayer = 1;
-                    io.emit("primary-player", 2);
-                } else if (!playerInfo[2][1]) {
+                } else if (!players[2].isCPU) {
                     primaryPlayer = 2;
-                    io.emit("primary-player", 3);
                 } else {
                     primaryPlayer = 3;
-                    io.emit("primary-player", 4);
                 }
                 io.emit('gameReady');
+                allTilesArray = findAllTiles();
             }
-            
         } else {
             sock.emit('gameNotReady');
         }
@@ -196,70 +260,144 @@ io.on('connection', (sock) => {
         io.emit('typing', player, text);
     });
     sock.on('get-all-player-names', () => {
-        let allNames = [playerInfo[0][0], playerInfo[1][0], playerInfo[2][0], playerInfo[3][0]];
-        sock.emit('get-all-player-names', allNames);
-        allTilesArray = findAllTiles();
-    });
-    sock.on('get-computer-players', () => {
-        sock.emit('push-computer-players', playerInfo);
+        let allNames = new Array(4);
+        for (let i = 0; i < 4; i++) {
+            if (players[i] != false) {
+                if (players[i].isCPU) {
+                    allNames[i] = players[i].name + " (CPU Level " + players[i].level + ")";
+                } else {
+                    allNames[i] = players[i].name;
+                }
+            } else {
+                allNames[i] = "";
+            }
+        }
+        sock.emit('get-all-player-names', allNames, primaryPlayer);
     });
     //Needs to be added to game.js and tested
     //All io functions created except round end
     sock.on('start-round', () => {
-        if (playerInfo[(roundNum + 4) % 4][1] == true) {
-            text = playerInfo[(roundNum + 4) % 4][0] + " has to roll the dice. Waiting for " + playerInfo[primaryPlayer][0] + " to press next to proceed...";
-        } else {
-            text = "Waiting for " + playerInfo[(roundNum + 4) % 4][0] + " to roll the dice.";
-        }
-        io.emit('update-text', text);
-        io.emit('update-round-wind', ((roundNum + 4) % 4));
-        io.emit('roll-dice', ((roundNum + 4) % 4));
+        startRound();
     });
-    sock.on("print-dice-roll", (dice) => {
-        io.emit('print-dice-roll', dice);
-        sock.emit('move-to-take-tiles');
-    })
-    sock.on("dice-rolled", () => {
-        if (playerInfo[(roundNum + 4) % 4][1] == true) {
-            text = playerInfo[(roundNum + 4) % 4][0] + " has rolled the dice. " + playerInfo[(roundNum + 4) % 4][0] + " needs to pick up their tiles. Waiting for " + playerInfo[primaryPlayer][0] + " to press the next button.";
+    sock.on("print-dice-roll", (dice, sum) => {
+        io.emit('print-dice-roll', dice, sum);
+        if (players[(roundNum + 4) % 4].isCPU) {
+            text = players[(roundNum + 4) % 4].name + " has rolled the dice. " + players[(roundNum + 4) % 4].name + " needs to pick up their tiles. Waiting for " + players[primaryPlayer].name + " to press the next button.";
+            io.emit('update-text', text);
+            giveBotTiles((roundNum + 4) % 4, 4);
+            io.emit("bot-took-tiles", 4, (roundNum + 4) % 4, players[(roundNum + 4) % 4].name);
         } else {
-            text = playerInfo[(roundNum + 4) % 4][0] + " has rolled the dice. Waiting for " + playerInfo[(roundNum + 4) % 4][0] + " to pick up their tiles...";
+            text = players[(roundNum + 4) % 4].name + " has rolled the dice. Waiting for " + players[(roundNum + 4) % 4].name + " to pick up their tiles...";
+            io.emit('update-text', text);
+            io.emit("find-next-player-get-tiles", (roundNum + 4) % 4, 4);
         }
-        io.emit('update-text', text);
-        sock.emit("start-tile-take");
+        tileCounter += 4;
     });
-    sock.on("get-tiles", (num, playerNum, tileCounter) => {
+    sock.on("next-clicked", (num, playerNum) => {
+        io.emit("update-draw-rows", num, players[playerNum].handIndex, playerNum);
+    });
+    sock.on("get-tiles", (num, playerNum, side) => {
         let outgoingTiles = new Array(num);
         for (let i = 0; i < num; i++) {
             outgoingTiles[i] = getTile();
         }
-        tileCounter += num;
-        sock.emit("send-tiles", outgoingTiles, playerNum, tileCounter);
-        io.emit("update-draw-rows", num, tileCounter - num, playerNum, playerInfo[playerNum][0]);
-    });
-    sock.on("next-player-get-tiles", (playerNum, tileCounter) => {
-        if (playerInfo[(roundNum + 4) % 4][1] == true) {
-            text = playerInfo[playerNum][0] + " has picked up their tiles. " + playerInfo[(roundNum + 4) % 4][0] + " needs to pick up their tile. Waiting for " + playerInfo[primaryPlayer][0] + " to press the next button.";
+        players[playerNum].handIndex += num;
+        if (side == 1) {
+            console.log("front");
+            io.emit("update-draw-rows", num, players[playerNum].handIndex, playerNum);
         } else {
-            text = playerInfo[playerNum][0] + " has picked up their tiles. Waiting for " + playerInfo[(playerNum + 5) % 4][0] + " to pick up their tiles...";
+            console.log("back");
+            io.emit("update-draw-row-back", num, players[playerNum].handIndex, playerNum);
+        }   
+        sock.emit("send-tiles", outgoingTiles);
+    });
+    sock.on("next-player-get-tiles", (playerNum) => {
+        if (tileCounter == 53) {
+            io.emit('remove-dice');
+            nextFlower((roundNum + 4) % 4);
+            if (players[(roundNum + 4) % 4].isCPU == false) { 
+                text = "Everyone has taken their tiles. Waiting for " + players[(roundNum + 4) % 4].name + " to replace their flowers...";
+                io.emit("update-text", text);
+            }
+        } else {
+            if (tileCounter == 48) {
+                num = 2;
+            } else if (tileCounter >= 50) {
+                num = 1;
+            } else {
+                num = 4;
+            }
+            if (players[(playerNum + 1) % 4].isCPU) {
+                text = players[playerNum].name + " has picked up their tiles. " + players[(playerNum + 1) % 4].name + " needs to pick up their tile. Waiting for " + players[primaryPlayer].name + " to press the next button.";
+                giveBotTiles((playerNum + 1) % 4, num);
+                io.emit("bot-took-tiles", num, (playerNum + 1) % 4, players[(playerNum + 1) % 4].name);
+            } else {
+                text = players[playerNum].name + " has picked up their tiles. Waiting for " + players[(playerNum + 1) % 4].name  + " to pick up their tiles...";
+                io.emit("find-next-player-get-tiles", (playerNum + 1) % 4, num);
+            }
+            tileCounter += num;
+            io.emit("update-text", text);
         }
-        io.emit("update-text", text);
-        io.emit("find-next-player-get-tiles", (playerNum + 5) % 4, tileCounter);
     }); 
-    sock.on("tile-take-done", () => {
-        text = "Everyone has taken their tiles. Waiting for " + playerInfo[(roundNum + 4) % 4][0] + " to play a tile...";
-        io.emit('update-text', text);
-        io.emit('remove-dice');
-        io.emit("first-turn", ((roundNum + 4) % 4));
+    sock.on("bot-flower-checked", (flower, playerNum, phase) => {
+        if (phase == 1) {
+            if (flower.length == 0) {
+                botTurn(playerNum);
+            } else {
+                text = players[playerNum].name + " has drawn a flower and needs to replace them. Waiting for " + players[primaryPlayer].name + " to press next to proceed...";
+                let output = spliceBotHand(flower, playerNum);
+                io.emit("prompt-next", output, playerNum, phase);
+            }
+        } else {
+            if (flower.length == 0) {
+                text = players[playerNum].name + " has no flowers. Waiting for " + players[primaryPlayer].name + " to press next to proceed...";
+                io.emit("bot-no-flowers", playerNum, players[playerNum].name);
+            } else {
+                text = players[playerNum].name + " has flowers and needs to replace them. Waiting for " + players[primaryPlayer].name + " to press next to proceed...";
+                let output = spliceBotHand(flower, playerNum);
+                io.emit("prompt-next", output, playerNum, phase);
+            }
+            io.emit("update-text", text);
+        }
     });
-    sock.on("turn-finished", () => {
-        counter++;
-        text = "Waiting for " + playerInfo[counter % 4][0] + " to player their turn...";
-        io.emit('update-text', text);
-        io.emit("turn", (counter % 4));
+    sock.on("show-bot-flowers", (flower, playerNum, phase) => {
+        io.emit("show-flower", flower, playerNum, players[playerNum].flowerIndex, players[playerNum].handIndex);
+        players[playerNum].flowerIndex += flower.length;
+        giveBotTiles(playerNum, flower.length);
+        io.emit("update-draw-row-back", flower.length, players[playerNum].handIndex, playerNum);
+        io.emit("check-bot-flower", botsHands[playerNum], playerNum, phase);
     });
-    sock.on("tile-played", (tile, playerNum) => {
-        io.emit("place-tile", tile, playerNum);
+    sock.on("get-next-flower", (playerNum) => {
+        nextFlower((playerNum + 1) % 4);
+    });
+    sock.on("show-flower", (flower, playerNum) => {
+        players[playerNum].handIndex -= flower.length;
+        io.emit("show-flower", flower, playerNum, players[playerNum].flowerIndex, players[playerNum].handIndex);
+        //io.emit("update-draw-row-back", flower.length, players[playerNum].handIndex, playerNum);
+        players[playerNum].flowerIndex += flower.length;
+    });
+    sock.on("bot-turn", (playerNum) => {
+        giveBotTiles(playerNum, 1);
+        io.emit("update-draw-rows", 1, players[playerNum].handIndex, playerNum);
+        io.emit("check-bot-flower", botsHands[playerNum], playerNum, 1);
+    });
+    sock.on("bot-first-turn", (playerNum) => {
+        botTurn(playerNum);
+    });
+    sock.on("turn-finished", (playerNum) => {
+        turn((playerNum + 1) % 4);
+    });
+    sock.on("tile-played", (tile, value, suit, playerNum) => {
+        players[playerNum].handIndex--;
+        io.emit("place-tile", tile, value, suit, playerNum, players[playerNum].handIndex);
+    });
+    sock.on("game-event", (tiles, playerNum) => {
+        gameEvent(tiles, playerNum);
+        if (tiles.length == 3) {
+            io.emit("draw-from-back", playerNum);
+        } else {
+            io.emit("first-turn", playerNum);
+        }
     });
 })
 io.on('disconnect', function() {

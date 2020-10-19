@@ -235,7 +235,18 @@ function cancelConfirm(player) {
 }
 sock.on('cancel', cancel);
 function update() {
-    sock.emit('getp1Name');
+    sock.emit("get-all-player-names");
+    sock.on("get-all-player-names", (names) => {
+        for (let i = 0; i < names.length; i++) {
+            if (names[i] != "" ) {
+                document.getElementById("p" + (i + 1) + "name-filled").innerHTML = names[i];
+                document.getElementById("p" + (i + 1) + "name").value = "";
+                document.getElementById("p" + (i + 1)).style.display = "none";
+                document.getElementById("p" + (i + 1) + "Cancel").style.display = "inline";
+            }
+        }
+    });
+    /*sock.emit('getp1Name');
     sock.on('getp1Name', (name) => {
         if (name != "") {
             document.getElementById("p1name-filled").innerHTML = name;
@@ -270,20 +281,13 @@ function update() {
             document.getElementById("p4").style.display = "none";
             document.getElementById("p4Cancel").style.display = "inline";
         }
-    });
+    });*/
 }
 function checkPlayers() {
     sock.emit('checkPlayers');
 }
 sock.on("allCPU", () => {
     alert("There must be atleast one human player!");
-});
-sock.on("primary-player", (num) => {
-    if (localStorage.getItem("player-num") == num) {
-        localStorage.setItem("isPrimaryPlayer", true);
-    } else {
-        localStorage.setItem("isPrimaryPlayer", false);
-    }
 });
 function cpuTrue(player) {
     var isSelected;

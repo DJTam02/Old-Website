@@ -33,22 +33,63 @@ function resize() {
         document.getElementById("full").style.width = ((18 * w) + (4 * h) + (2 * x) + (2 * y)) + "px";
         document.getElementById("full").style.height = ((18 * w) + (8 * h) + (2 * x)) + "px";
     }
+    vert = document.getElementsByClassName("tile-vert");
+    for (var i = 0; i < vert.length; i++) {
+        vert[i].style.width = w + "px";
+        vert[i].style.height = h + "px";
+        vert[i].style.fontSize = h + "px";
+    }
     horiz = document.getElementsByClassName("tile-horiz");
-        vert = document.getElementsByClassName("tile-vert");
-        for (var i = 0; i < horiz.length; i++) {
-            horiz[i].style.width = h + "px";
-            horiz[i].style.height = w + "px";
-        }
-        for (var i = 0; i < vert.length; i++) {
-            vert[i].style.width = w + "px";
-            vert[i].style.height = h + "px";
-            vert[i].style.fontSize = h + "px";
-        }
-        //Text
-        text = document.getElementsByClassName("text");
-        for (var i = 0; i < text.length; i++) {
-            text[i].style.fontSize = (w / 1.5) + "px";
-        }
+    for (var i = 0; i < horiz.length; i++) {
+        horiz[i].style.width = w + "px";
+        horiz[i].style.height = h + "px";
+        horiz[i].style.fontSize = h + "px";
+    }
+    var leftDraw = document.getElementById("draw3").getElementsByClassName("tile-horiz");
+    for (let i = 0; i < leftDraw.length; i++) {
+        let transformValue = -(-w + (i * (h - w)));
+        leftDraw[i].style.transform = "rotate(90deg) translate(" + transformValue + "px)";
+    }
+    var rightDraw = document.getElementById("draw1").getElementsByClassName("tile-horiz");
+    for (let i = 0; i < rightDraw.length; i++) {
+        let transformValue = (-w + (i * (h - w)));
+        rightDraw[i].style.transform = "rotate(270deg) translate(" + transformValue + "px)";
+    }
+    var rightHand = document.getElementById("hand1").getElementsByClassName("tile-horiz");
+    for (let i = 0; i < rightHand.length; i++) {
+        let transformValue = (-w + (i * (h - w)));
+        rightHand[i].style.transform = "rotate(270deg) translate(" + transformValue + "px)";
+    }
+    var leftHand = document.getElementById("hand3").getElementsByClassName("tile-horiz");
+    for (let i = 0; i < leftHand.length; i++) {
+        let transformValue = -(-w + (i * (h - w)));
+        leftHand[i].style.transform = "rotate(90deg) translate(" + transformValue + "px)";
+    }
+    var leftFin = document.getElementById("fin3").getElementsByClassName("tile-horiz");
+    for (let i = 0; i < leftFin.length; i++) {
+        let transformValue = -(-w + (i * (h - w)));
+        leftFin[i].style.transform = "rotate(90deg) translate(" + transformValue + "px)";
+    }
+    var leftFlower = document.getElementById("flower3").getElementsByClassName("tile-horiz");
+    for (let i = 0; i < leftFlower.length; i++) {
+        let transformValue = -(-w + (i * (h - w)));
+        leftFlower[i].style.transform = "rotate(90deg) translate(" + transformValue + "px)";
+    }
+    var rightFin = document.getElementById("fin1").getElementsByClassName("tile-horiz");
+    for (let i = 0; i < rightFin.length; i++) {
+        let transformValue = -((h + w) - (i * (h - w)));
+        rightFin[i].style.transform = "rotate(270deg) translate(" + transformValue + "px)";
+    }
+    var rightFlower = document.getElementById("flower1").getElementsByClassName("tile-horiz");
+    for (let i = 0; i < rightFlower.length; i++) {
+        let transformValue = -((h + w) - (i * (h - w)));
+        rightFlower[i].style.transform = "rotate(270deg) translate(" + transformValue + "px)";
+    }
+    //Text
+    text = document.getElementsByClassName("text");
+    for (var i = 0; i < text.length; i++) {
+        text[i].style.fontSize = (w / 1.5) + "px";
+    }
     //Top left
     document.getElementById("top-left").style.width = ((5 * h) + (2 * x)) + "px";
     document.getElementById("top-left").style.height = (22 * w) + "px";
@@ -56,10 +97,12 @@ function resize() {
     document.getElementById("left-flower-and-fin").style.width = h + "px";
     document.getElementById("left-flower-and-fin").style.height = (22 * w) + "px";
 
-    document.getElementById("left-flower").style.width = h + "px";
-    document.getElementById("left-fin").style.width = h + "px";
+    document.getElementById("flower3").style.width = h + "px";
+    document.getElementById("flower3").style.height = (w * 8) + "px";
+    document.getElementById("fin3").style.width = h + "px";
+    document.getElementById("fin3").style.height = (w * 14) + "px";
 
-    document.getElementById("compass").style.marginLeft = x + "px";
+    document.getElementById("compass").style.marginLeft = (x - h) + "px";
     if ((4 * h) + x < y - h) {
         document.getElementById("top-left").style.width = ((5 * h) + (2 * x)) + "px";
         document.getElementById("compass").style.width = ((4 * h) + x) + "px";
@@ -84,8 +127,8 @@ function resize() {
     document.getElementById("top-flower-and-fin").style.width = (22 * w) + "px";
     document.getElementById("top-flower-and-fin").style.height = h + "px";
 
-    document.getElementById("top-fin").style.height = h + "px";
-    document.getElementById("top-flower").style.height = h + "px";
+    document.getElementById("fin2").style.height = h + "px";
+    document.getElementById("flower2").style.height = h + "px";
 
     document.getElementById("round-wind").style.paddingTop = h + "px";
     document.getElementById("round-wind").style.width = (y - x) + "px";
@@ -93,31 +136,63 @@ function resize() {
 
 
     //Bot left
+    document.getElementById("entire-bottom-row").style.height = (9 * h) + "px";
+    document.getElementById("finished-sections").style.left = (23 * w) + "px";
+    document.getElementById("finished-sections").style.width = (10 * w) + "px";
+    document.getElementById("finished-sections").style.marginTop = h + "px";
+    let playerSets = document.getElementById("finished-sections").getElementsByClassName("playerSets");
+    for (let i = 0; i < playerSets.length; i++) {
+        playerSets[i].style.width = (5 * w) + "px";
+    }
+
+    document.getElementById("playerFinished0").style.width = (4 * w) + "px";
+    document.getElementById("playerFinished0").style.height = (h * 1.5) + "px";
+    document.getElementById("playerFinished0").style.paddingRight = (w / 2) + "px";
+    document.getElementById("playerFinished0").style.paddingBottom = (h / 4) + "px";
+
+    document.getElementById("playerFinished1").style.width = (4 * w) + "px";
+    document.getElementById("playerFinished1").style.height = (h * 1.5) + "px";
+    document.getElementById("playerFinished1").style.paddingRight = (w / 2) + "px";
+    document.getElementById("playerFinished1").style.paddingBottom = (h / 4) + "px";
+
+    document.getElementById("playerFinished2").style.width = (4 * w) + "px";
+    document.getElementById("playerFinished2").style.height = (h * 1.5) + "px";
+    document.getElementById("playerFinished2").style.paddingRight = (w / 2) + "px";
+    document.getElementById("playerFinished2").style.paddingBottom = (h / 4) + "px";
+
+    document.getElementById("playerFinished3").style.width = (4 * w) + "px";
+    document.getElementById("playerFinished3").style.height = (h * 1.5) + "px";
+    document.getElementById("playerFinished3").style.paddingRight = (w / 2) + "px";
+    document.getElementById("playerFinished3").style.paddingBottom = (h / 4) + "px";
+
     document.getElementById("bot-left").style.width = (y - h) + "px";
-    document.getElementById("bot-left").style.height = ((4 * h) + x) + "px";
+    document.getElementById("bot-left").style.height = (7 * h) + "px";
 
     document.getElementById("score").style.marginBottom = h + "px";
     document.getElementById("score").style.width = (y - h) + "px";
-    document.getElementById("score").style.height = ((h * 2) + x) + "px";
+    document.getElementById("score").style.minHeight = ((h * 2) + x) + "px";
 
     document.getElementById("bot-flower-and-fin").style.width = (22 * w) + "px";
     document.getElementById("bot-flower-and-fin").style.height = h + "px";
 
-    document.getElementById("bot-flower").style.height = h + "px";
-    document.getElementById("bot-fin").style.height = h + "px";
+    document.getElementById("flower0").style.height = h + "px";
+    document.getElementById("fin0").style.height = h + "px";
 
 
     //Bot right
     document.getElementById("bot-right").style.height = (22 * w) + "px";
     
     document.getElementById("info").style.margin = "auto";
-    document.getElementById("info").style.right = h + "px";
+    document.getElementById("info").style.right = (x + w) + "px";
 
     document.getElementById("right-flower-and-fin").style.width = h + "px";
     document.getElementById("right-flower-and-fin").style.height = (22 * w) + "px";
 
-    document.getElementById("right-fin").style.width = h + "px";
-    document.getElementById("right-flower").style.width = h + "px";
+    document.getElementById("fin1").style.width = h + "px";
+    document.getElementById("fin1").style.height = (w * 14) + "px";
+    document.getElementById("flower1").style.width = h + "px";
+    document.getElementById("flower1").style.height = (w * 8) + "px";
+
 
 
     //Square
@@ -129,24 +204,24 @@ function resize() {
 
 
     //Hands
-    document.getElementById("top-hand").style.marginLeft = -(7 * w) + "px";
-    document.getElementById("top-hand").style.width = (14 * w) + "px";
-    document.getElementById("top-hand").style.height = h + "px";
+    document.getElementById("hand2").style.marginLeft = -(7 * w) + "px";
+    document.getElementById("hand2").style.width = (14 * w) + "px";
+    document.getElementById("hand2").style.height = h + "px";
 
 
-    document.getElementById("left-hand").style.marginTop = -(7 * w) + "px";
-    document.getElementById("left-hand").style.width = h + "px";
-    document.getElementById("left-hand").style.height = (14 * w) + "px";
+    document.getElementById("hand3").style.marginTop = -(7 * w) + "px";
+    document.getElementById("hand3").style.width = h + "px";
+    document.getElementById("hand3").style.height = (14 * w) + "px";
 
 
-    document.getElementById("right-hand").style.marginTop = -(7 * w) + "px";
-    document.getElementById("right-hand").style.width = h + "px";
-    document.getElementById("right-hand").style.height = (14 * w) + "px";
+    document.getElementById("hand1").style.marginTop = -(7 * w) + "px";
+    document.getElementById("hand1").style.width = h + "px";
+    document.getElementById("hand1").style.height = (14 * w) + "px";
 
 
-    document.getElementById("bot-hand").style.marginLeft = -(7 * w) + "px";
-    document.getElementById("bot-hand").style.width = ((16 * w) + (2 * h) + x) + "px";
-    document.getElementById("bot-hand").style.height = h + "px";
+    document.getElementById("hand0").style.marginLeft = -(7 * w) + "px";
+    document.getElementById("hand0").style.width = ((16 * w) + (2 * h) + x) + "px";
+    document.getElementById("hand0").style.height = h + "px";
 
 
     //Draws
@@ -156,21 +231,21 @@ function resize() {
     document.getElementById("draw").style.margin = "auto";
 
 
-    document.getElementById("top-draw").style.marginLeft = (-9 * w) + "px";
-    document.getElementById("top-draw").style.width = (18 * w) + "px";
-    document.getElementById("top-draw").style.height = h + "px";
+    document.getElementById("draw2").style.marginLeft = (-9 * w) + "px";
+    document.getElementById("draw2").style.width = (18 * w) + "px";
+    document.getElementById("draw2").style.height = h + "px";
 
-    document.getElementById("left-draw").style.marginTop = -(9 * w) + "px";
-    document.getElementById("left-draw").style.height = (18 * w) + "px";
-    document.getElementById("left-draw").style.width = h + "px";
+    document.getElementById("draw3").style.marginTop = -(9 * w) + "px";
+    document.getElementById("draw3").style.height = (18 * w) + "px";
+    document.getElementById("draw3").style.width = h + "px";
 
-    document.getElementById("right-draw").style.marginTop = -(9 * w) + "px";
-    document.getElementById("right-draw").style.height = (18 * w) + "px";
-    document.getElementById("right-draw").style.width = h + "px";
+    document.getElementById("draw1").style.marginTop = -(9 * w) + "px";
+    document.getElementById("draw1").style.height = (18 * w) + "px";
+    document.getElementById("draw1").style.width = h + "px";
 
-    document.getElementById("bot-draw").style.marginLeft = -(9 * w) + "px";
-    document.getElementById("bot-draw").style.width = (18 * w) + "px";
-    document.getElementById("bot-draw").style.height = h + "px";
+    document.getElementById("draw0").style.marginLeft = -(9 * w) + "px";
+    document.getElementById("draw0").style.width = (18 * w) + "px";
+    document.getElementById("draw0").style.height = h + "px";
 
 
     document.getElementById("mid").style.width = (18 * w) + "px";
@@ -187,7 +262,7 @@ function resize() {
         document.getElementById("button").style.height = h + "px";
     }
 
-    var handTiles = document.getElementById("bot-hand").getElementsByClassName("tile-vert");
+    var handTiles = document.getElementById("hand0").getElementsByClassName("tile-vert");
     for (let i = 0; i < handTiles.length; i++) {
         handTiles[i].style.fontSize = h + "px";
     }
@@ -261,15 +336,15 @@ function resize() {
         for (let i = sum; i < sum + 26; i++) {
             draw[i].style.opacity = "0%";
         }
-        var topHand = document.getElementById("top-hand").getElementsByClassName("tile-vert");
+        var topHand = document.getElementById("hand2").getElementsByClassName("tile-vert");
         for (let i = 0; i < topHand.length; i++) {
             topHand[i].style.opacity = "100%";
         }
-        var leftHand = document.getElementById("left-hand").getElementsByClassName("tile-horiz");
+        var leftHand = document.getElementById("hand3").getElementsByClassName("tile-horiz");
         for (let i = 0; i < leftHand.length; i++) {
             leftHand[i].style.opacity = "100%";
         }
-        var rightHand = document.getElementById("right-hand").getElementsByClassName("tile-horiz");
+        var rightHand = document.getElementById("hand1").getElementsByClassName("tile-horiz");
         for (let i = 0; i < rightHand.length; i++) {
             rightHand[i].style.opacity = "100%";
         }
@@ -282,51 +357,51 @@ function resize() {
     }
 }*/
 function invis() {
-    var topHand = document.getElementById("top-hand").getElementsByClassName("tile-vert");
+    var topHand = document.getElementById("hand2").getElementsByClassName("tile-vert");
     for (let i = 0; i < topHand.length; i++) {
         topHand[i].style.opacity = "0%";
     }
-    var leftHand = document.getElementById("left-hand").getElementsByClassName("tile-horiz");
+    var leftHand = document.getElementById("hand3").getElementsByClassName("tile-horiz");
     for (let i = 0; i < leftHand.length; i++) {
         leftHand[i].style.opacity = "0%";
     }
-    var rightHand = document.getElementById("right-hand").getElementsByClassName("tile-horiz");
+    var rightHand = document.getElementById("hand1").getElementsByClassName("tile-horiz");
     for (let i = 0; i < rightHand.length; i++) {
         rightHand[i].style.opacity = "0%";
     }
-    var botHand = document.getElementById("bot-hand").getElementsByClassName("tile-vert");
+    var botHand = document.getElementById("hand0").getElementsByClassName("tile-vert");
     for (let i = 0; i < botHand.length; i++) {
         botHand[i].style.opacity = "0%";
     }
-    var rightFin = document.getElementById("right-fin").getElementsByClassName("tile-horiz");
+    var rightFin = document.getElementById("fin1").getElementsByClassName("tile-horiz");
     for (let i = 0; i < rightFin.length; i++) {
         rightFin[i].style.opacity = "0%";
     }
-    var leftFin = document.getElementById("left-fin").getElementsByClassName("tile-horiz");
+    var leftFin = document.getElementById("fin3").getElementsByClassName("tile-horiz");
     for (let i = 0; i < leftFin.length; i++) {
         leftFin[i].style.opacity = "0%";
     }
-    var topFin = document.getElementById("top-fin").getElementsByClassName("tile-vert");
+    var topFin = document.getElementById("fin2").getElementsByClassName("tile-vert");
     for (let i = 0; i < topFin.length; i++) {
         topFin[i].style.opacity = "0%";
     }
-    var botFin = document.getElementById("bot-fin").getElementsByClassName("tile-vert");
+    var botFin = document.getElementById("fin0").getElementsByClassName("tile-vert");
     for (let i = 0; i < botFin.length; i++) {
         botFin[i].style.opacity = "0%";
     }
-    var topFlower = document.getElementById("top-flower").getElementsByClassName("tile-vert");
+    var topFlower = document.getElementById("flower2").getElementsByClassName("tile-vert");
     for (let i = 0; i < topFlower.length; i++) {
         topFlower[i].style.opacity = "0%";
     }
-    var botFlower = document.getElementById("bot-flower").getElementsByClassName("tile-vert");
+    var botFlower = document.getElementById("flower0").getElementsByClassName("tile-vert");
     for (let i = 0; i < botFlower.length; i++) {
         botFlower[i].style.opacity = "0%";
     }
-    var leftFlower = document.getElementById("left-flower").getElementsByClassName("tile-horiz");
+    var leftFlower = document.getElementById("flower3").getElementsByClassName("tile-horiz");
     for (let i = 0; i < leftFlower.length; i++) {
         leftFlower[i].style.opacity = "0%";
     }
-    var rightFlower = document.getElementById("right-flower").getElementsByClassName("tile-horiz");
+    var rightFlower = document.getElementById("flower1").getElementsByClassName("tile-horiz");
     for (let i = 0; i < rightFlower.length; i++) {
         rightFlower[i].style.opacity = "0%";
     }
@@ -339,7 +414,7 @@ function invis() {
         let ran = Math.floor(Math.random() * (42));
         if (allTiles[ran].remaining > 0) {
             player.hand[i] = allTiles[ran];
-            let hand = document.getElementById("bot-hand").getElementsByClassName("tile-vert");
+            let hand = document.getElementById("hand0").getElementsByClassName("tile-vert");
             hand[i].innerHTML = "<span>" + botPlayer.hand[i].unicode + "</span>";
             hand[i].style.padding = "0px";
             hand[i].style.opacity = "100%"
