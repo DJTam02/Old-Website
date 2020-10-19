@@ -54,7 +54,7 @@ $("#original").on('mousedown', function(e) {
     newNode();
 });
 function newNode() {
-    $("body").append('<svg class="box" height="100" width="100" style="top: 35px; left: 40px;"><circle class="circ" cx="' + radius + '" cy="' + radius + '" r="' + radius + '" fill="red" /></svg>');
+    $("body").append('<svg class="box" height="100" width="100" style="top: 35px; left: 84px;"><circle class="circ" cx="' + radius + '" cy="' + radius + '" r="' + radius + '" fill="red" /></svg>');
     var temp = new Array(3);
     temp[0] = $(".circ:last");
     temp[1] = true; // Is clicked
@@ -90,7 +90,7 @@ function drawLine(num) {
     }
     circles[num][2].add(connect, $(".lineBox:last").index(".lineBox"));
     circles[connect][2].add(num, $(".lineBox:last").index(".lineBox"));  
-    $(".lineBox:last").focus(addInputBox);
+    $(".lineBox:last").on("focus", addInputBox);
     connect = -1;
 }
 function showDelete() {
@@ -99,17 +99,6 @@ function showDelete() {
     $("#border").css("background-color", "red");
     $("body").css("background-color", "red");
     $("body").css("background-image", "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.7) 5px, rgba(255,255,255,.7   ) 60px)");
-}
-function circleInfo() {
-    console.log("CIRCLE INFO");
-    for (let i = 0; i < circles.length; i++) {
-        console.log("Circle #: " + i);
-        console.log(circles[i]);
-        console.log("Edges:");
-        for (let j = 0; j < circles[i][2].edges.length; j++) {
-            console.log(circles[i][2].edges[j]);
-        }
-    }
 }
 function showInfo() {
     $("#info-modal").css("display", "block");
@@ -125,7 +114,7 @@ function changeInfo(dir) {
     if (infoPage == 0 && next == -1) {
         $(".next").eq(0).css("display", "block");
         $(".next").eq(1).css("display", "none");
-    } else if (infoPage == 7 && next == 1) {
+    } else if (infoPage == 6 && next == 1) {
         $(".next").eq(2).css("display", "block");
         $(".next").eq(1).css("display", "none");
     } else {
@@ -133,7 +122,7 @@ function changeInfo(dir) {
         $(".next").eq(1).css("display", "block");
         $(".next").eq(0).css("display", "none");
     }
-    $("#page").html((infoPage + 1) + "/8");
+    $("#page").html((infoPage + 1) + "/7");
 }
 function closeInfo() {
     $("#info-modal").css("display", "none");
@@ -166,8 +155,8 @@ function addWeight(num, num2) {
         }
     }
     $("#tempInput").remove();
-    $(".lineBox").eq(lineIndex).blur();
-    $(".lineBox").eq(lineIndex).focus(addInputBox);
+    $(".lineBox").eq(lineIndex).trigger("blur");
+    $(".lineBox").eq(lineIndex).on("focus", addInputBox);
 }
 function addInputBox () {
     var nodes = new Array(0);
@@ -185,8 +174,8 @@ function addInputBox () {
     var yOffset = parseFloat($(this).offset().top);
     var high = parseFloat($(this).attr("height"));
     var wid = parseFloat($(this).attr("width"));
-    $("body").append('<input min="0" type="number" onkeydown="numVerify(event)" onfocusout="addWeight(' + nodes[0] + ', ' + nodes[1] + ')" id="tempInput" style="position: absolute; left: ' + (xOffset + (wid / 2)) + 'px; top: ' + (yOffset + (high / 2)) + 'px; transform: translate(-50%, -50%); border: solid black 2px; z-index: 1; style: width: 50px;" value="' + prevValue + '">');
-    $("#tempInput").focus();
+    $("body").append('<input min="0" max="2147483647" type="number" onkeydown="numVerify(event)" onfocusout="addWeight(' + nodes[0] + ', ' + nodes[1] + ')" id="tempInput" style="position: absolute; left: ' + (xOffset + (wid / 2)) + 'px; top: ' + (yOffset + (high / 2)) + 'px; transform: translate(-50%, -50%); border: solid black 2px; z-index: 1; width: 50px;" value="' + prevValue + '">');
+    $("#tempInput").trigger("focus");
     $(this).off("focus");
 }
 function numVerify (e) {
@@ -293,7 +282,7 @@ function unclickNode(e) {
         }
     }
 }
-function startDFS() {
+function start(alg) {
     for (let i = 0; i < circles.length; i++) {
         circles[i][0].off();
         circles[i][0].on("click", selectStartingNode);
@@ -301,53 +290,149 @@ function startDFS() {
             $('.lineBox').eq(circles[i][2].edges[j][1]).off();
         }
     }
-    algo = "DFS";
+    algo = alg;
     $("#topLeft").css("display", "none");
     $("#topRight").css("display", "none");
     $("#buttons").css("display", "none");
-    $("#title").html("You have selected DFS! Please click on a starting node.");
+    $("#title").html("You have selected " + alg + "! Please click on a starting node.");
 }
 function selectStartingNode() {
-    $("#topLeft").css("display", "inline-block");
-    $("#topRight").css("display", "inline-block");
-    $("#header").css("display", "none");
-    $("#title").html("Graphing Algorithms Visualizer!");
+    $("#title").css("display", "none");
+    $("#infoDiv").css("display", "inline-block");
     if (algo == "DFS") {
-        DFS($(this).index(".circ"), [0]);
-        printTest();
+        $("#stack").html("<h1>Stack</h1><h3>" + $(this).index(".circ") + "</h3>");
+        $("#output").append('<h3 style="display: inline-block;">' + $(this).index(".circ") + "</h3>");
+        DFS($(this).index(".circ"), [$(this).index(".circ")]);
     } else if (algo == "BFS") {
-        BFS([$(this).index('.circ')], new Array(0));
-    } else if (algo == "Dijk") {
-        DSP($(this).index(".circ"));
+        $("#stack").html("<h1>Queue</h1>");
+        BFS([$(this).index('.circ')], [$(this).index('.circ')]);
+    } else if (algo == "Dijkstra's Shortest Path") {
+        $("#distances").css("display", "inline-block");
+        $("#stack").css("display", "none");
+        var distances = new Array(0);
+        for (let i = 0; i < circles.length; i++) distances[i] = 2147483647;
+        distances[$(this).index(".circ")] = 0;
+        DSP(distances, $(this).index(".circ"), [$(this).index(".circ")]);
     }
     for (let i = 0; i < circles.length; i++) {
         circles[i][0].off();
     }
 }
-async function DFS(selected, visited) {
-    var allVisited = true;
-    //Print selected node
-    console.log("selected: " + selected);
-    $(".circ").eq(selected).attr("fill", visitedColor);
-    //Loop through unvisited nodes
-    for (let i = 0; i < circles[selected][2].edges.length; i++) {
-        console.log(selected + ": " + circles[selected][2].edges[i][0] + " visited? " + visited.includes(circles[selected][2].edges[i][0]));
-        if (!visited.includes(circles[selected][2].edges[i][0])) {
-            allVisited = false;
-            visited.push(circles[selected][2].edges[i][0]);
-            console.log(visited);
-            await sleep(1000);
-            DFS(circles[selected][2].edges[i][0], visited);
+async function DFS(start, visited) {
+    var stack = [start];
+    var allVisited;
+    while (stack.length > 0) {
+        allVisited = true;
+        let selected = stack[stack.length - 1];
+        //Print selected node
+        console.log("selected: " + selected);
+        $(".circ").eq(selected).attr("fill", visitedColor);
+        //Loop through unvisited nodes
+        for (let i = 0; i < circles[selected][2].edges.length; i++) {
+            console.log(selected + ": " + circles[selected][2].edges[i][0] + " visited? " + visited.includes(circles[selected][2].edges[i][0]));
+            if (!visited.includes(circles[selected][2].edges[i][0])) {
+                allVisited = false;
+                visited.push(circles[selected][2].edges[i][0]);
+                stack.push(circles[selected][2].edges[i][0]);
+                console.log(stack);
+                await sleep(1000);
+                $("#output").append('<h3 style="display: inline-block">, ' + circles[selected][2].edges[i][0] + "</h3>");
+                $(".lineBox").eq(circles[selected][2].edges[i][1]).find("line").css("stroke", visitedColor);
+                break;
+            }
+        }
+        if (allVisited) {
+            stack.pop();
+        } 
+        $("#stack").html("<h1>Stack</h1><h3>" + stack + "</h3>");
+    }
+    $("#output").append("</h3>");
+    await sleep(1000);
+    $("#title").html("Depth First Search has Finished!");
+    $("#title").css("display", "inline-block");
+    await sleep(1000);
+    algoFinish();
+}
+async function BFS(queue, visited) {
+    $("#output").append('<h3 style="display: inline-block;">' + queue[0] + ", </h3>");
+    console.log("selected: " + queue[0]);
+    $(".circ").eq(queue[0]).attr("fill", visitedColor);
+    for (let i = 0; i < circles[queue[0]][2].edges.length; i++) {
+        if (!visited.includes(circles[queue[0]][2].edges[i][0])) {
+            visited.push(circles[queue[0]][2].edges[i][0]);
+            queue.push(circles[queue[0]][2].edges[i][0]);
+        } else if (circles[circles[queue[0]][2].edges[i][0]][0].attr("fill") == visitedColor) {
+            $(".lineBox").eq(circles[queue[0]][2].edges[i][1]).find("line").css("stroke", visitedColor);
         }
     }
-    if (allVisited) {
-        console.log("here");
+    queue.splice(0, 1);
+    $("#stack").html("<h1>Queue</h1><h3>" + queue + "</h3>");   
+    if (queue.length > 0) {
         await sleep(1000);
+        BFS(queue, visited);
+    } else {
+        await sleep(1000);
+        $("#stack").html("<h1>Queue</h1>");
+        $("#title").html("Breadth First Search has Finished!");
+        $("#title").css("display", "inline-block");
+        await sleep(1000);
+        algoFinish();
     }
 }
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-function printTest() {
-    console.log("done");
+function algoFinish() {
+    $("#topLeft").css("display", "inline-block");
+    $("#topRight").css("display", "inline-block");
+    $("#header").css("display", "block");
+    $("#title").html("Graphing Algorithms Visualizer!");
+    $("#buttons").css("display", "inline-block");
+    $("#output").html("<h1>Output</h1>");
+    $("#distances").html("<h1>Distances</h1>");
+    $("#infoDiv").css("display", "none");
+    $("#stack").html("<h1>Stack</h1>");
+    for (let i = 0; i < circles.length; i++) {
+        circles[i][0].mousemove(moveNode);
+        circles[i][0].on('mousedown', clickNode);
+        circles[i][0].on('mouseup', unclickNode);
+        circles[i][0].attr("fill", "red");
+    }
+    for (let i = 0; i < $(".lineBox").length; i++) {
+        $(".lineBox").eq(i).on("focus", addInputBox);
+        $(".lineBox").eq(i).find("line").css("stroke", "red")
+    }
+    algo = "";
+}
+async function DSP(distances, node, visited) {
+    $("#output").append(node + ", ");
+    $("#distances").html("<h1>Distances</h1>");
+    circles[node][0].attr("fill", visitedColor);
+    visited.push(node);
+    var nextNode = node;
+    var max = 2147483647;
+    for (let i = 0; i < circles[node][2].edges.length; i++) {
+        console.log(distances[circles[node][2].edges[i][0]]);
+        if (distances[node] + circles[node][2].edges[i][2] < distances[circles[node][2].edges[i][0]]) {
+            distances[circles[node][2].edges[i][0]] = distances[node] + circles[node][2].edges[i][2];
+        }
+    }
+    for (let i = 0; i < distances.length; i++) {
+        $("#distances").append('<h3 style="display: inline-block; margin-right: 10px; margin-left: 10px;">' + i + "<br>" + distances[i] + "</h3>");
+        if (!visited.includes(i) && distances[i] < max) {
+            max = distances[i];
+            nextNode = i;
+        }           
+    }
+    if (nextNode != node) {
+        await sleep(2000);
+        DSP(distances, nextNode, visited);
+    } else {
+        await sleep(1000);
+        $("#title").html("Dijkstra's Algorithm has Finished!");
+        $("#title").css("display", "inline-block");
+        await sleep(1000);
+        algoFinish();
+        console.log(distances);
+    }
 }

@@ -12,6 +12,9 @@
     min-width: 10px;
     min-height: 10px;
 }
+.lineBox:focus {
+    background-color: red   ;
+}
 #graph {
     height: 70%;
     width: 80%;
@@ -125,4 +128,24 @@ h1, h3, h4, h5, h6, p {
  }
  #header {
      text-align: center;
+ }
+ #infoDiv {
+     position: absolute;
+     bottom: 0px;
+     left: 50%;
+     width: 80%;
+     transform: translate(-50%, 0%);
+     text-align: center; 
+     display: none;
+ }
+ #stack, #distances, #output {
+     height: 100%;
+     margin-right: 20px;
+     margin-left: 20px;
+ }
+ #stack, #output {
+    display: inline-block;
+ }
+ #distances {
+     display: none;
  }
