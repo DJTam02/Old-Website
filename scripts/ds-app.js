@@ -53,6 +53,12 @@ $("#original").on('mousedown', function(e) {
     clicked = true;
     newNode();
 });
+const glow = setInterval( function () { 
+                $("#info-button-div").css("box-shadow", "0 0 15px 10px yellow");
+                setTimeout(function () {
+                    $("#info-button-div").css("box-shadow", "none");
+                }, 2000)
+            }, 4000);
 function newNode() {
     $("body").append('<svg class="box" height="100" width="100" style="top: 35px; left: 84px;"><circle class="circ" cx="' + radius + '" cy="' + radius + '" r="' + radius + '" fill="red" /></svg>');
     var temp = new Array(3);
@@ -101,6 +107,7 @@ function showDelete() {
     $("body").css("background-image", "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.7) 5px, rgba(255,255,255,.7   ) 60px)");
 }
 function showInfo() {
+    clearInterval(glow);
     $("#info-modal").css("display", "block");
 }
 function changeInfo(dir) {

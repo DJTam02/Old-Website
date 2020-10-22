@@ -77,10 +77,16 @@ body {
 }
 #info {
     transition: 0.25s;
-    width: 30%; 
+    width: 100%; 
     cursor: pointer;
 }
-#info:hover {
+#info-button-div {
+    border-radius: 50%;
+    width: 30%; 
+    display: inline-block;
+    transition: box-shadow 2s, width 0.25s;
+}
+#info-button-div:hover {  
     width: 33%;
 }
 #info-modal {
@@ -93,8 +99,8 @@ body {
 }
 #info-panel {
     position: absolute;
-    width: 60%;
-    height: 70%;
+    width: 70%;
+    max-height: 100vh;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -103,13 +109,22 @@ body {
     border-radius: 15px;
     text-align: center;
     padding: 30px;
+    padding-bottom: 120px;
+}
+@media (max-width: 1130px) {
+    #info-panel h1 {
+        font-size: 3vw
+    } 
+    #info-panel h4 {
+        font-size: 2vw
+    }
 }
 h1, h3, h4, h5, h6, p {
     font-family: 'Montserrat', sans-serif;
  }
  .next {
     position: absolute;
-    bottom: 60px;
+    bottom: 30px;
     width: 100%;
     left: 0px;
     text-align: center;
